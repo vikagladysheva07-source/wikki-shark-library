@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Старт в Claude — wikki.ocean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#030A14;
+  --surface:#0D1A26;
+  --ivory:#F2EDE2;
+  --id:rgba(242,237,226,.56);
+  --idd:rgba(242,237,226,.34);
+  --line:rgba(242,237,226,.10);
+  --purple:#9B6FE8;--purple-br:#C4A4FF;
+  --teal:#00C4D4;--teal-br:#5EE0EE;
+  --font:'DM Sans',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--black);color:var(--ivory);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* main */
+main{max-width:680px;margin:0 auto;padding:100px 32px 120px}
+
+/* back link */
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--idd);margin-bottom:32px;transition:color .2s}
+.back-link:hover{color:var(--ivory)}
+
+/* h1 */
+h1{font-size:clamp(40px,6vw,64px);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:24px;text-transform:lowercase}
+h1 span{color:var(--purple-br)}
+
+/* desc */
+.desc{font-size:16px;color:var(--id);line-height:1.7;max-width:520px;margin-bottom:48px}
+.desc em{font-style:normal;color:var(--teal-br)}
+
+/* section label */
+.section-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:lowercase;margin-bottom:40px}
+
+/* level (reused as "этап") */
+.level{margin-bottom:64px}
+.level-head{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+.level-num{font-size:clamp(56px,8vw,96px);font-weight:900;line-height:1;letter-spacing:-.05em;color:var(--purple-br);opacity:.25;flex-shrink:0}
+.level-title{font-size:24px;font-weight:700;letter-spacing:-.02em;text-transform:lowercase}
+.level-sub{font-size:13px;color:var(--teal-br);font-weight:500;text-transform:lowercase;margin-bottom:16px;letter-spacing:.02em}
+.level-body{font-size:15px;color:var(--id);line-height:1.75;max-width:580px}
+.level-body p{margin-bottom:12px}
+.level-body p:last-child{margin-bottom:0}
+.level-body strong{color:var(--ivory);font-weight:600}
+.level-body a,.step-text a{color:var(--purple-br);text-decoration:underline;text-underline-offset:2px}
+.level-body a:hover,.step-text a:hover{color:var(--teal-br)}
+
+/* steps */
+.steps{margin-top:24px;display:flex;flex-direction:column;gap:0}
+.step{padding:14px 0;border-top:1px solid var(--line);display:flex;gap:16px;align-items:flex-start}
+.step:last-child{border-bottom:1px solid var(--line)}
+.step-n{font-size:11px;font-weight:700;color:var(--idd);flex-shrink:0;width:16px;padding-top:2px;font-variant-numeric:tabular-nums}
+.step-text{font-size:14px;color:var(--id);line-height:1.6}
+.step-text strong{color:var(--ivory);font-weight:600}
+.step-text code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(242,237,226,.07);padding:2px 6px;border-radius:4px;font-size:12.5px;color:var(--ivory)}
+
+/* divider */
+.divider{border:none;border-top:1px solid var(--line);margin:0 0 64px}
+
+/* highlight box — minimal */
+.note{padding:20px 24px;border-left:2px solid var(--purple);background:rgba(155,111,232,.05);margin-top:24px;border-radius:0 4px 4px 0}
+.note p{font-size:14px;color:var(--id);line-height:1.65}
+.note strong{color:var(--ivory)}
+
+/* option cards for payment methods */
+.options{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.option{padding:20px 22px;border:1px solid var(--line);border-radius:12px;background:rgba(242,237,226,.015)}
+.option-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.option-num{width:22px;height:22px;border-radius:50%;background:rgba(155,111,232,.12);color:var(--purple-br);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.option-title{font-size:14px;font-weight:700;color:var(--ivory)}
+.option p{font-size:13.5px;color:var(--id);line-height:1.65}
+.option p a{color:var(--purple-br);text-decoration:underline;text-underline-offset:2px}
+.option p a:hover{color:var(--teal-br)}
+
+/* practicum CTA */
+.cta-block{margin-top:88px;padding:40px;border:1px solid var(--line);border-radius:16px;background:rgba(155,111,232,.04)}
+.cta-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:14px}
+.cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:none}
+.cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--black);background:var(--purple-br);padding:13px 26px;border-radius:100px;transition:opacity .2s,transform .2s;border:none;cursor:pointer;font-family:var(--font)}
+.cta-btn:hover{opacity:.88;transform:translateY(-1px)}
+
+/* modal */
+body.wo-modal-lock{overflow:hidden}
+.wo-modal-overlay{position:fixed;inset:0;background:rgba(3,10,20,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;opacity:0;visibility:hidden;transition:opacity .3s ease}
+.wo-modal-overlay.open{opacity:1;visibility:visible}
+.wo-modal{position:relative;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#0F1D2B,#040B15);border:1px solid rgba(196,164,255,.16);border-radius:20px;padding:44px 40px 40px;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(155,111,232,.05);transform:translateY(18px) scale(.97);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.wo-modal-overlay.open .wo-modal{transform:translateY(0) scale(1)}
+.wo-modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(242,237,226,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--id);font-size:15px;line-height:1;transition:border-color .2s,color .2s,background .2s}
+.wo-modal-close:hover{border-color:rgba(155,111,232,.4);color:var(--ivory);background:rgba(155,111,232,.06)}
+.wo-modal-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:12px}
+.wo-modal h3{font-size:clamp(19px,2.4vw,23px);font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-bottom:10px}
+.wo-modal-desc{font-size:13.5px;color:var(--id);line-height:1.62;max-width:420px;margin-bottom:28px}
+@media(max-width:600px){.wo-modal{padding:36px 24px 32px;border-radius:16px}}
+
+/* custom form */
+.wo-form{max-width:480px;margin-top:0}
+.wo-field{margin-bottom:14px}
+.wo-field>label{display:block;font-size:11px;color:var(--idd);letter-spacing:.06em;text-transform:lowercase;margin-bottom:8px}
+.wo-input,.wo-textarea{width:100%;padding:14px 16px;background:rgba(242,237,226,.03);border:1px solid var(--line);border-radius:10px;color:var(--ivory);font-family:var(--font);font-size:14px;transition:border-color .2s,background .2s}
+.wo-input:focus,.wo-textarea:focus{outline:none;border-color:var(--purple);background:rgba(155,111,232,.05)}
+.wo-input::placeholder,.wo-textarea::placeholder{color:var(--idd)}
+.wo-textarea{resize:vertical;min-height:88px;line-height:1.5}
+.wo-checks{display:flex;flex-direction:column;gap:8px}
+.wo-check{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s}
+.wo-check:hover{border-color:rgba(155,111,232,.3)}
+.wo-check:has(input:checked){border-color:var(--purple-br);background:rgba(155,111,232,.06)}
+.wo-check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--line);border-radius:5px;background:rgba(242,237,226,.03);flex-shrink:0;cursor:pointer;position:relative;transition:border-color .2s,background .2s}
+.wo-check input:checked{background:var(--purple-br);border-color:var(--purple-br)}
+.wo-check input:checked::after{content:'';position:absolute;left:5px;top:1px;width:5px;height:9px;border:solid var(--black);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.wo-check span{font-size:13.5px;color:var(--id)}
+.wo-check:has(input:checked) span{color:var(--ivory)}
+.wo-error{font-size:12px;color:var(--teal-br);margin-top:8px;display:none}
+.wo-error.show{display:block}
+.wo-submit{width:100%;padding:15px;margin-top:6px;font-size:14px;font-weight:700;color:var(--black);background:var(--purple-br);border:none;border-radius:100px;cursor:pointer;transition:opacity .2s;font-family:var(--font)}
+.wo-submit:hover{opacity:.88}
+.wo-submit:disabled{opacity:.5;cursor:not-allowed}
+.wo-success{display:none;padding:32px 0 8px}
+.wo-success.show{display:block}
+.wo-success p{font-size:15px;color:var(--ivory);line-height:1.6}
+.wo-success span{font-size:13px;color:var(--id)}
+
+/* more resources */
+.more-section{margin-top:96px}
+.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:lowercase;margin-bottom:32px}
+.more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.more-card{display:block;padding:24px;border:1px solid var(--line);border-radius:8px;transition:border-color .2s,background .2s}
+.more-card:hover{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.04)}
+.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;text-transform:lowercase;margin-bottom:10px}
+.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3;text-transform:lowercase}
+
+/* footer */
+footer{padding:40px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+footer span{font-size:12px;color:var(--idd)}
+footer a{font-size:12px;color:var(--idd);transition:color .2s}
+footer a:hover{color:var(--ivory)}
+
+@media(max-width:600px){
+  main{padding:60px 20px 80px}
+  .level-num{font-size:56px}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<main>
+
+  <a href="library.html" class="back-link">← библиотека ресурсов</a>
+
+  <h1>старт<br><span>в claude</span></h1>
+
+  <p class="desc">
+    для тех, кто хочет начать работать в Claude и разобраться: как зарегистрироваться и оплатить подписку из России или СНГ — по порядку, <em>без блокировок и потерянных денег</em>.
+  </p>
+
+  <p class="section-label">план по этапам</p>
+
+  <!-- ЭТАП 1 — VPN -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">1</span>
+      <span class="level-title">vpn</span>
+    </div>
+    <p class="level-sub">без него дальше идти бессмысленно</p>
+    <div class="level-body">
+      <p>claude.ai определяет регион по IP. без смены региона либо не откроется регистрация, либо позже отвалится оплата — поэтому это не опциональный шаг, а первый.</p>
+      <p>главное — не менять страну VPN между регистрацией и оплатой. система видит разные страны на одном аккаунте как подозрительную активность и блокирует его ещё до того, как получится разобраться, что произошло.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="step-n">1</span><span class="step-text">поставить VPN — рекомендация: <a href="https://t.me/FelixVPNbot?start=4d9785f8-c2b8-4d9c-b73a-281a85d1b5e7" target="_blank" rel="noopener">FelixVPN</a> (бот в Telegram, есть инструкция под Windows и Mac)</span></div>
+      <div class="step"><span class="step-n">2</span><span class="step-text">в приложении выбрать сервер — <strong>США</strong>: с этой страной Claude работает стабильнее всего, меньше сбоев на регистрации и оплате</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ЭТАП 2 — СКАЧАТЬ CLAUDE -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">2</span>
+      <span class="level-title">загрузка claude</span>
+    </div>
+    <p class="level-sub">приложение для ноутбука</p>
+    <div class="level-body">
+      <p>Claude работает и в браузере, и отдельным приложением для компьютера. с приложением удобнее — оно не теряется среди вкладок и не разлогинивает при смене VPN.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="step-n">1</span><span class="step-text">скачать Claude на ноутбук — приложение на <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>, доступно для Windows и Mac</span></div>
+      <div class="step"><span class="step-n">2</span><span class="step-text">для вкладок <strong>Cowork</strong> и <strong>Code</strong> нужна платная подписка — Pro, Max или Team, на бесплатном тарифе они не работают; на Windows дополнительно нужно установить <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">Git for Windows</a> и перезапустить приложение; на Mac обычно уже есть — проверяется командой <code>git --version</code> в Терминале, если его нет, macOS предложит установить</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ЭТАП 3 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">3</span>
+      <span class="level-title">регистрация</span>
+    </div>
+    <p class="level-sub">почта, телефон, первый вход</p>
+    <div class="level-body">
+      <p>сама регистрация простая — email, код из письма, иногда подтверждение по SMS. основные проблемы возникают не на этом шаге, а из-за того, что было (или не было) сделано на первом.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="step-n">1</span><span class="step-text">завести почту — Gmail подходит; для отдельного аккаунта от личной переписки лучше новую</span></div>
+      <div class="step"><span class="step-n">2</span><span class="step-text">ввести почту на claude.ai, подтвердить код из письма</span></div>
+      <div class="step"><span class="step-n">3</span><span class="step-text">если попросят номер телефона — подойдёт только номер другой страны, способный принять SMS; номера РФ верификацию не проходят</span></div>
+      <div class="step"><span class="step-n">4</span><span class="step-text">не привязывать один номер или почту сразу к нескольким аккаунтам — частый триггер блокировки</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ЭТАП 4 — ОПЛАТА -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">4</span>
+      <span class="level-title">оплата подписки</span>
+    </div>
+    <p class="level-sub">самое больное место — но решаемое</p>
+    <div class="level-body">
+      <p>карты Visa и Mastercard, выпущенные российскими банками, не работают на зарубежных сайтах с 2022 года — это ограничение платёжных систем, а не Anthropic. поэтому нужен способ оплаты в валюте, отдельный от обычной карты.</p>
+      <p>вариантов три. у каждого свои плюсы и своя цена ошибки.</p>
+    </div>
+    <div class="options">
+      <div class="option">
+        <div class="option-head"><span class="option-num">1</span><span class="option-title">карта банка другой страны</span></div>
+        <p>если уже есть счёт в Армении, Казахстане, Кыргызстане, Грузии или ОАЭ — карта привязывается напрямую, без посредников. самый надёжный вариант, но требует, чтобы счёт уже существовал.</p>
+      </div>
+      <div class="option">
+        <div class="option-head"><span class="option-num">2</span><span class="option-title">виртуальная карта через сервис для зарубежных подписок</span></div>
+        <p>пополнение в рублях, взамен — виртуальный Visa или Mastercard для международных платежей. один из вариантов — <a href="https://platipomiru.com/?code=DRSLADBV" target="_blank" rel="noopener">platipomiru.com</a>. такие сервисы часто меняют условия или закрываются — перед тем как заводить деньги, стоит проверить свежие отзывы за последний месяц и не заводить сразу крупную сумму, сначала протестировать на маленьком платеже.</p>
+      </div>
+      <div class="option">
+        <div class="option-head"><span class="option-num">3</span><span class="option-title">попросить оплатить того, у кого есть карта за рубежом</span></div>
+        <p>друг, родственник, коллега оплачивает — деньги возвращаются ему в рублях. самый простой способ, если такой человек есть, но зависит от чужой доступности и доверия.</p>
+      </div>
+    </div>
+    <div class="note">
+      <p><strong>про готовые аккаунты и шеринг подписки:</strong> покупка чужого аккаунта или совместное использование одной подписки на нескольких человек — прямое нарушение правил Anthropic. аккаунт блокируют без возврата денег, и предсказать момент блокировки нельзя.</p>
+    </div>
+    <div class="note" style="margin-top:12px">
+      <p><strong>это меняется быстрее, чем страницы гайдов.</strong> рабочий способ оплаты полгода назад и сейчас может отличаться — рынок таких сервисов живёт короткими циклами. перед тем как переводить крупную сумму, свериться в актуальных обсуждениях стоит всегда.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ЭТАП 5 — ПРОБЛЕМЫ -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">5</span>
+      <span class="level-title">частые проблемы</span>
+    </div>
+    <p class="level-sub">и что с ними делать</p>
+    <div class="steps">
+      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>оплата отклонена</strong> — на виртуальной карте должно быть с запасом сверху: курсовая разница и комиссия сервиса съедают больше, чем стоит сама подписка</span></div>
+      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>аккаунт заблокирован сразу после оплаты</strong> — чаще всего из-за смены IP или страны между регистрацией и оплатой; стоит держать одну и ту же страну VPN на каждом этапе</span></div>
+      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>письмо о подозрительной активности</strong> — обычно достаточно подтвердить вход по ссылке из письма, паниковать не нужно</span></div>
+    </div>
+  </div>
+
+  <!-- WIKKI.OCEAN CTA -->
+  <div class="cta-block">
+    <p class="cta-eyebrow">аккаунт настроен — дальше что?</p>
+    <h3>Доступ есть. Вопрос в том, как встроить Claude в свою работу.</h3>
+    <p>Зарегистрироваться и оплатить — техническая часть. Дальше начинается настоящая работа: что автоматизировать первым, как выстроить систему под свою задачу — бизнес это или личный бренд.</p>
+    <p>Описание ситуации — отвечу лично и разберу конкретный случай.</p>
+    <button class="cta-btn" type="button" id="wo-open-btn">разобрать ситуацию →</button>
+  </div>
+
+  <!-- WIKKI.OCEAN MODAL -->
+  <div class="wo-modal-overlay" id="wo-overlay">
+    <div class="wo-modal" role="dialog" aria-modal="true" aria-labelledby="wo-modal-title">
+      <button class="wo-modal-close" id="wo-close-btn" type="button" aria-label="Закрыть">✕</button>
+
+      <div id="wo-form-wrap">
+        <p class="wo-modal-eyebrow">заявка</p>
+        <h3 id="wo-modal-title">Заявка на разбор</h3>
+        <p class="wo-modal-desc">Описание ситуации — отвечу лично и разберу конкретный случай.</p>
+
+        <form id="wo-form" class="wo-form" action="https://docs.google.com/forms/d/e/1FAIpQLSd-a5-CHpZNwLvAD1YZuwGQDNSIjNFQaMB5eFdwIvWj3OtCLg/formResponse" method="POST" target="wo-hidden-frame">
+          <div class="wo-field">
+            <label for="wo-name">имя</label>
+            <input class="wo-input" type="text" id="wo-name" name="entry.1994539439" placeholder="Имя или обращение" required>
+          </div>
+          <div class="wo-field">
+            <label for="wo-contact">контакт для связи</label>
+            <input class="wo-input" type="text" id="wo-contact" name="entry.1074568097" placeholder="Telegram или номер" required>
+          </div>
+          <div class="wo-field">
+            <label>что интересует</label>
+            <div class="wo-checks">
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Практикум &quot;Океан Влияния&quot;"><span>практикум «океан влияния»</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Контент-завод под ключ"><span>контент-завод под ключ</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="AI-автоматизации"><span>ai-автоматизации</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Личная работа"><span>личная работа</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Не определился(-ась)"><span>ещё не определился(-ась)</span></label>
+            </div>
+            <p class="wo-error" id="wo-check-error">нужно выбрать хотя бы один вариант</p>
+          </div>
+          <div class="wo-field">
+            <label for="wo-request">какой запрос</label>
+            <textarea class="wo-textarea" id="wo-request" name="entry.1982844077" placeholder="Что сейчас происходит и что нужно построить" required></textarea>
+          </div>
+          <button class="wo-submit" type="submit" id="wo-submit">отправить заявку</button>
+        </form>
+      </div>
+
+      <div class="wo-success" id="wo-success">
+        <p>Заявка отправлена</p>
+        <span>Отвечу в течение 24 часов.</span>
+      </div>
+      <iframe name="wo-hidden-frame" style="display:none" title="wo-hidden-frame"></iframe>
+    </div>
+  </div>
+  <script>
+  (function(){
+    var overlay=document.getElementById('wo-overlay');
+    var openBtn=document.getElementById('wo-open-btn');
+    var closeBtn=document.getElementById('wo-close-btn');
+    function openModal(){overlay.classList.add('open');document.body.classList.add('wo-modal-lock');}
+    function closeModal(){overlay.classList.remove('open');document.body.classList.remove('wo-modal-lock');}
+    openBtn.addEventListener('click',openModal);
+    closeBtn.addEventListener('click',closeModal);
+    overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closeModal();});
+
+    var form=document.getElementById('wo-form');
+    var formWrap=document.getElementById('wo-form-wrap');
+    var checkError=document.getElementById('wo-check-error');
+    var submitBtn=document.getElementById('wo-submit');
+    form.addEventListener('submit',function(e){
+      var checked=form.querySelectorAll('input[name="entry.1345489343"]:checked');
+      if(checked.length===0){
+        e.preventDefault();
+        checkError.classList.add('show');
+        return;
+      }
+      checkError.classList.remove('show');
+      submitBtn.disabled=true;
+      submitBtn.textContent='отправляю…';
+      setTimeout(function(){
+        formWrap.style.display='none';
+        document.getElementById('wo-success').classList.add('show');
+      },700);
+    });
+  })();
+  </script>
+
+  <!-- MORE RESOURCES -->
+  <div class="more-section">
+    <p class="more-label">ещё материалы</p>
+    <div class="more-grid">
+      <a class="more-card" href="claude-guide.html">
+        <p class="more-card-label">гайд</p>
+        <p class="more-card-title">5 уровней claude — от чата до системы</p>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>© 2026 wikki.ocean</span>
+  <a href="https://t.me/wikki_shark">@wikki.shark</a>
+</footer>
+
+</body>
+</html>
