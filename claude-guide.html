@@ -26,8 +26,8 @@ body{
   background-color:var(--black);
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(1100px 620px at 82% -10%,rgba(155,111,232,.11),transparent 60%),
-    radial-gradient(900px 520px at 8% 110%,rgba(0,196,212,.05),transparent 58%);
+    radial-gradient(1100px 620px at 84% -8%,rgba(155,111,232,.15),transparent 60%),
+    radial-gradient(950px 560px at 6% 108%,rgba(0,196,212,.09),transparent 58%);
   background-repeat:repeat,no-repeat,no-repeat;
   background-size:120px 120px,auto,auto;
 }
@@ -79,12 +79,12 @@ h1 span{color:var(--purple-br)}
 .divider{border:none;height:1px;margin:0 0 64px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent)}
 
 /* highlight box — minimal */
-.note{padding:20px 24px;border-left:2px solid var(--purple);background:rgba(155,111,232,.05);margin-top:24px;border-radius:0 4px 4px 0}
+.note{padding:20px 24px;border-left:2px solid var(--purple);background:linear-gradient(90deg,rgba(155,111,232,.08),rgba(155,111,232,.02));margin-top:24px;border-radius:0 4px 4px 0;box-shadow:0 16px 32px -24px rgba(0,0,0,.55)}
 .note p{font-size:14px;color:var(--id);line-height:1.65}
 .note strong{color:var(--ivory)}
 
 /* practicum CTA */
-.cta-block{margin-top:88px;padding:40px;border:1px solid var(--line);border-radius:16px;background:rgba(155,111,232,.04);box-shadow:0 32px 64px -32px rgba(0,0,0,.6),inset 0 1px 0 rgba(242,237,226,.04)}
+.cta-block{margin-top:88px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(0,196,212,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
 .cta-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:14px}
 .cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:none}
 .cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
@@ -283,7 +283,7 @@ footer a:hover{color:var(--ivory)}
   </div>
 
   <!-- ФУНДАМЕНТ -->
-  <div style="margin-bottom:64px;padding:32px;border:1px solid var(--line);border-radius:12px;background:rgba(155,111,232,.03)">
+  <div style="margin-bottom:64px;padding:32px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(165deg,rgba(155,111,232,.06),rgba(0,196,212,.015));box-shadow:0 20px 40px -28px rgba(0,0,0,.6),inset 0 1px 0 rgba(242,237,226,.04)">
     <p class="section-label" style="margin-bottom:20px">бонус — фундамент под все уровни</p>
     <p style="font-size:16px;font-weight:700;margin-bottom:12px;color:var(--ivory)">4 файла, которые делают claude твоим</p>
     <div class="level-body">
