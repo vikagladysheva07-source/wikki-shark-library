@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шаблон «о себе» для Claude — wikki.ocean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#050508;
+  --surface:#0D1A26;
+  --ivory:#F2EDE2;
+  --id:rgba(242,237,226,.56);
+  --idd:rgba(242,237,226,.34);
+  --line:rgba(242,237,226,.10);
+  --purple:#9B6FE8;--purple-br:#C4A4FF;
+  --teal:#00C4D4;--teal-br:#5EE0EE;
+  --font:'DM Sans',system-ui,-apple-system,sans-serif;
+  --mono:'SFMono-Regular',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);color:var(--ivory);-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-color:var(--black);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:120px 120px;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── ORBS (ambient glow) ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:-1}
+.orb-purple{background:radial-gradient(circle,rgba(155,111,232,.26) 0%,rgba(91,47,190,.09) 70%)}
+.orb-teal{background:radial-gradient(circle,rgba(0,196,212,.20) 0%,rgba(0,196,212,.05) 70%)}
+
+/* nav */
+nav{padding:24px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.nav-logo img{height:36px;width:auto}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:13px;color:var(--idd);font-weight:400;letter-spacing:.01em;transition:color .2s}
+.nav-links a:hover{color:var(--ivory)}
+
+/* main */
+main{max-width:680px;margin:0 auto;padding:80px 32px 120px}
+
+/* tag */
+.tag{font-size:11px;color:var(--id);letter-spacing:.12em;text-transform:lowercase;margin-bottom:28px}
+
+/* h1 */
+h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:-.04em;margin-bottom:24px;text-transform:lowercase}
+h1 span{color:var(--purple-br)}
+
+/* desc */
+.desc{font-size:16px;color:var(--id);line-height:1.7;max-width:520px;margin-bottom:48px}
+.desc em{font-style:normal;color:var(--teal-br)}
+
+/* section label */
+.section-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:lowercase;margin-bottom:24px}
+
+/* note */
+.note{padding:20px 24px;border-left:2px solid var(--purple);background:linear-gradient(90deg,rgba(155,111,232,.08),rgba(155,111,232,.02));margin-bottom:48px;border-radius:0 4px 4px 0;box-shadow:0 16px 32px -24px rgba(0,0,0,.55)}
+.note p{font-size:14px;color:var(--id);line-height:1.65}
+.note strong{color:var(--ivory)}
+
+/* location block */
+.loc{margin-bottom:64px}
+.loc p{font-size:15px;color:var(--id);line-height:1.75;margin-bottom:12px}
+.loc p:last-child{margin-bottom:0}
+.loc code{font-family:var(--mono);font-size:13px;color:var(--teal-br);background:rgba(0,196,212,.08);padding:2px 7px;border-radius:5px}
+
+/* template box */
+.tpl-box{margin:24px 0 64px;padding:28px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.55);box-shadow:inset 0 1px 0 rgba(242,237,226,.04),0 20px 44px -28px rgba(0,0,0,.7)}
+.tpl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px}
+.tpl-label{font-size:11px;color:var(--idd);letter-spacing:.12em;text-transform:lowercase}
+.tpl-copy{font-size:12px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.3);border-radius:100px;padding:8px 16px;cursor:pointer;transition:all .2s;font-family:var(--font);white-space:nowrap}
+.tpl-copy:hover{background:rgba(155,111,232,.18)}
+.tpl-copy.copied{color:var(--teal-br);border-color:rgba(0,196,212,.4);background:rgba(0,196,212,.1)}
+.tpl-box pre{font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--id);white-space:pre-wrap;word-break:break-word}
+.tpl-box pre b{color:var(--ivory);font-weight:700}
+.tpl-ph{color:var(--teal-br)}
+
+/* level (reused for per-block breakdown) */
+.level{margin-bottom:56px}
+.level-head{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+.level-num{font-size:clamp(48px,7vw,80px);font-weight:900;line-height:1;letter-spacing:-.05em;color:var(--purple-br);opacity:.25;flex-shrink:0}
+.level-title{font-size:22px;font-weight:700;letter-spacing:-.02em;text-transform:lowercase}
+.level-sub{font-size:13px;color:var(--teal-br);font-weight:500;text-transform:lowercase;margin-bottom:16px;letter-spacing:.02em}
+.level-body{font-size:15px;color:var(--id);line-height:1.75;max-width:580px}
+.level-body p{margin-bottom:12px}
+.level-body p:last-child{margin-bottom:0}
+.level-body em{font-style:normal;color:var(--ivory)}
+
+/* divider */
+.divider{border:none;height:1px;margin:0 0 64px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent)}
+
+/* example box */
+.example-box{margin-top:24px;padding:28px;border:1px solid rgba(155,111,232,.2);border-radius:14px;background:linear-gradient(165deg,rgba(155,111,232,.06),rgba(0,196,212,.015));box-shadow:0 20px 44px -28px rgba(0,0,0,.7),inset 0 1px 0 rgba(242,237,226,.04)}
+.example-box .tpl-label{margin-bottom:16px}
+.example-box pre{font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--id);white-space:pre-wrap;word-break:break-word}
+.example-box pre b{color:var(--purple-br);font-weight:700}
+
+/* practicum CTA */
+.cta-block{margin-top:24px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(0,196,212,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
+.cta-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:14px}
+.cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:none}
+.cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--black);background:var(--purple-br);padding:13px 26px;border-radius:100px;transition:opacity .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1);border:none;cursor:pointer;font-family:var(--font);box-shadow:0 12px 28px -10px rgba(155,111,232,.55)}
+.cta-btn:hover{opacity:.92;transform:translateY(-2px);box-shadow:0 16px 36px -8px rgba(155,111,232,.7)}
+
+/* modal */
+body.wo-modal-lock{overflow:hidden}
+.wo-modal-overlay{position:fixed;inset:0;background:rgba(3,10,20,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;opacity:0;visibility:hidden;transition:opacity .3s ease}
+.wo-modal-overlay.open{opacity:1;visibility:visible}
+.wo-modal{position:relative;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#0F1D2B,#040B15);border:1px solid rgba(196,164,255,.16);border-radius:20px;padding:44px 40px 40px;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(155,111,232,.05);transform:translateY(18px) scale(.97);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.wo-modal-overlay.open .wo-modal{transform:translateY(0) scale(1)}
+.wo-modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(242,237,226,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--id);font-size:15px;line-height:1;transition:border-color .2s,color .2s,background .2s}
+.wo-modal-close:hover{border-color:rgba(155,111,232,.4);color:var(--ivory);background:rgba(155,111,232,.06)}
+.wo-modal-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:12px}
+.wo-modal h3{font-size:clamp(19px,2.4vw,23px);font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-bottom:10px}
+.wo-modal-desc{font-size:13.5px;color:var(--id);line-height:1.62;max-width:420px;margin-bottom:28px}
+@media(max-width:600px){.wo-modal{padding:36px 24px 32px;border-radius:16px}}
+
+/* custom form */
+.wo-form{max-width:480px;margin-top:0}
+.wo-field{margin-bottom:14px}
+.wo-field>label{display:block;font-size:11px;color:var(--idd);letter-spacing:.06em;text-transform:lowercase;margin-bottom:8px}
+.wo-input,.wo-textarea{width:100%;padding:14px 16px;background:rgba(242,237,226,.03);border:1px solid var(--line);border-radius:10px;color:var(--ivory);font-family:var(--font);font-size:14px;transition:border-color .2s,background .2s}
+.wo-input:focus,.wo-textarea:focus{outline:none;border-color:var(--purple);background:rgba(155,111,232,.05)}
+.wo-input::placeholder,.wo-textarea::placeholder{color:var(--idd)}
+.wo-textarea{resize:vertical;min-height:88px;line-height:1.5}
+.wo-checks{display:flex;flex-direction:column;gap:8px}
+.wo-check{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s}
+.wo-check:hover{border-color:rgba(155,111,232,.3)}
+.wo-check:has(input:checked){border-color:var(--purple-br);background:rgba(155,111,232,.06)}
+.wo-check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--line);border-radius:5px;background:rgba(242,237,226,.03);flex-shrink:0;cursor:pointer;position:relative;transition:border-color .2s,background .2s}
+.wo-check input:checked{background:var(--purple-br);border-color:var(--purple-br)}
+.wo-check input:checked::after{content:'';position:absolute;left:5px;top:1px;width:5px;height:9px;border:solid var(--black);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.wo-check span{font-size:13.5px;color:var(--id)}
+.wo-check:has(input:checked) span{color:var(--ivory)}
+.wo-error{font-size:12px;color:var(--teal-br);margin-top:8px;display:none}
+.wo-error.show{display:block}
+.wo-submit{width:100%;padding:15px;margin-top:6px;font-size:14px;font-weight:700;color:var(--black);background:var(--purple-br);border:none;border-radius:100px;cursor:pointer;transition:opacity .2s;font-family:var(--font)}
+.wo-submit:hover{opacity:.88}
+.wo-submit:disabled{opacity:.5;cursor:not-allowed}
+.wo-success{display:none;padding:32px 0 8px}
+.wo-success.show{display:block}
+.wo-success p{font-size:15px;color:var(--ivory);line-height:1.6}
+.wo-success span{font-size:13px;color:var(--id)}
+
+/* more resources */
+.more-section{margin-top:96px}
+.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:lowercase;margin-bottom:32px}
+.more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.more-card{display:block;padding:24px;border:1px solid var(--line);border-radius:8px;transition:border-color .35s cubic-bezier(.16,1,.3,1),background .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
+.more-card:hover{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.04);transform:translateY(-3px);box-shadow:0 24px 48px -24px rgba(0,0,0,.6)}
+.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;text-transform:lowercase;margin-bottom:10px}
+.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3;text-transform:lowercase}
+
+/* footer */
+footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+footer span{font-size:12px;color:var(--idd)}
+.footer-logo{height:64px;width:auto;display:block}
+
+@media(max-width:600px){
+  nav{padding:20px}
+  main{padding:60px 20px 80px}
+  .level-num{font-size:52px}
+  .tpl-box,.example-box{padding:20px}
+  .tpl-head{flex-direction:column;align-items:flex-start;gap:10px}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-purple" style="width:600px;height:600px;top:-160px;right:-160px;opacity:.75"></div>
+<div class="orb orb-teal" style="width:400px;height:400px;bottom:-120px;left:-140px;opacity:.6"></div>
+
+<nav>
+  <a href="https://wikki.ocean" class="nav-logo">
+    <img src="wikki-logo-transparent.png" alt="wikki.ocean">
+  </a>
+  <div class="nav-links">
+    <a href="library.html">библиотека</a>
+    <a href="https://t.me/wikki_shark">telegram</a>
+    <a href="https://instagram.com/wikki.shark">instagram</a>
+    <a href="https://wikki.ocean">сайт</a>
+  </div>
+</nav>
+
+<main>
+
+  <p class="tag">бесплатный материал — шаблон для claude</p>
+
+  <h1>шаблон<br><span>«о себе»</span></h1>
+
+  <p class="desc">
+    в настройках claude есть поле, куда почти никто не пишет ничего толкового. большинство или оставляют его пустым, или вставляют резюме.<br>
+    заполненное правильно — оно превращает claude из <em>умного незнакомца</em> в со-основателя, который уже знает твой бизнес в первом же чате.
+  </p>
+
+  <div class="note">
+    <p>я виктория гладышева — этот текст стоит у меня в личных настройках claude. дальше — не мой текст под копирование, а структура: шесть блоков, из которых собирается рабочий профиль. заполняй своими фактами, не моими.</p>
+  </div>
+
+  <p class="section-label">где это находится</p>
+  <div class="loc">
+    <p>Настройки → раздел <code>Профиль</code> → поле «личные предпочтения» (в английском интерфейсе — <code>Personal preferences</code>).</p>
+    <p>Заполняется один раз и работает во всех чатах аккаунта — не только в одном проекте. Это фундамент под всё остальное: даже если позже сделаешь отдельные инструкции под проекты, база «кто я» должна стоять здесь.</p>
+  </div>
+
+  <p class="section-label">шаблон — скопируй и заполни</p>
+
+  <div class="tpl-box">
+    <div class="tpl-head">
+      <span class="tpl-label">копируется как есть</span>
+      <button class="tpl-copy" id="tpl-copy-btn" type="button">скопировать шаблон</button>
+    </div>
+    <pre id="tpl-source"><b>## КТО Я</b>
+<span class="tpl-ph">[профессия/роль]</span>. <span class="tpl-ph">[возраст, если хочешь его называть]</span>. <span class="tpl-ph">[1–2 факта о бэкграунде — с числом: сколько лет в деле, сколько проектов, какой рынок]</span>. <span class="tpl-ph">[ключевое достижение №1 — с цифрой]</span>. <span class="tpl-ph">[ключевое достижение №2 — с цифрой]</span>. <span class="tpl-ph">[цель на горизонте 1–3 года]</span>.
+
+<b>## ЧЕМ ЗАНИМАЮСЬ / МОЯ КОМПАНИЯ</b>
+<span class="tpl-ph">[название компании/проекта]</span> — <span class="tpl-ph">[что делает компания одним предложением, без маркетингового языка]</span>. <span class="tpl-ph">[кому помогает и какую проблему решает]</span>. <span class="tpl-ph">[личный бренд/канал, если ведёшь отдельно]</span>.
+
+<b>## МОЯ ФИЛОСОФИЯ (опционально)</b>
+<span class="tpl-ph">[одна мысль, которая объясняет, почему ты делаешь то, что делаешь — личное убеждение, а не миссия из презентации]</span>.
+
+<b>## КАК ОТВЕЧАТЬ</b>
+Говори со мной как <span class="tpl-ph">[со-основатель / партнёр / личный тренер — назови роль, не «ассистент»]</span>. <span class="tpl-ph">[что обязательно: например — одно чёткое решение вместо пяти вариантов]</span>. <span class="tpl-ph">[что запрещено: например — не начинать с похвалы, не льстить идеям, не заканчивать мотивацией]</span>. Короткий вопрос — короткий ответ. Язык по умолчанию — <span class="tpl-ph">[русский/английский]</span>.
+
+<b>## КАК ПИСАТЬ ТЕКСТЫ</b>
+<span class="tpl-ph">[ритм: чередовать короткие и длинные предложения / только короткие]</span>. Пиши с мнением и конкретикой — цифры, механика, примеры, не перечисление фактов. Не использовать: <span class="tpl-ph">[список слов-маркеров нейросети — свой список или база ниже]</span>.
+
+<b>## ТОНАЛЬНОСТЬ</b>
+<span class="tpl-ph">[2–3 черты того, как ты говоришь в жизни]</span>. Пример голоса: «<span class="tpl-ph">[2–3 предложения — отрывок текста, который звучит ровно как ты]</span>».</pre>
+  </div>
+
+  <hr class="divider">
+
+  <p class="section-label">как заполнять — блок за блоком</p>
+
+  <!-- БЛОК 1 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">1</span>
+      <span class="level-title">кто я</span>
+    </div>
+    <p class="level-sub">факты, а не эпитеты</p>
+    <div class="level-body">
+      <p>пишешь роль и биографию — но только то, что можно проверить. «успешный предприниматель» и «эксперт с многолетним опытом» не говорят claude ничего — это же самое пишут все.</p>
+      <p>правило: одна строка — один факт с числом. сколько лет в деле, сколько проектов сделано, какой рынок, какое достижение с цифрой.</p>
+      <p><em>пример:</em> «руководила digital-командой кандидата в президенты», «организовала тренинг на 100+ участниц с выручкой $40 000».</p>
+      <p>если факт нельзя подтвердить цифрой — либо убери, либо сформулируй честно как процесс: «строю», «сейчас делаю», а не «достигла».</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- БЛОК 2 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">2</span>
+      <span class="level-title">компания</span>
+    </div>
+    <p class="level-sub">одно предложение, без маркетингового языка</p>
+    <div class="level-body">
+      <p>что делает твоя компания или проект — фраза, которую поймёт человек не из твоей ниши. если после прочтения непонятно, чем ты зарабатываешь, — переписывай.</p>
+      <p>кому помогает и какую проблему решает — конкретно, не «улучшаем жизни людей».</p>
+      <p>если ведёшь личный бренд отдельно от компании — укажи название и площадку. claude должен понимать разницу между твоим бизнесом и твоим блогом.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- БЛОК 3 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">3</span>
+      <span class="level-title">философия</span>
+    </div>
+    <p class="level-sub">личное убеждение, не миссия из презентации</p>
+    <div class="level-body">
+      <p>одна мысль, которая объясняет твои решения. не то, что написано на сайте компании для инвесторов, — то, во что ты веришь, когда никто не проверяет.</p>
+      <p>если такой мысли пока нет — пропусти блок целиком. пустая философия хуже, чем её отсутствие: claude начнёт её выдумывать за тебя.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- БЛОК 4 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">4</span>
+      <span class="level-title">как отвечать</span>
+    </div>
+    <p class="level-sub">роль + запрещённые реакции</p>
+    <div class="level-body">
+      <p>назови роль явно: со-основатель, партнёр, тренер — не «ассистент». роль меняет тон каждого ответа сильнее, чем любое другое указание.</p>
+      <p>перечисли, чего быть не должно: без лести, без пяти вариантов вместо одного решения, без похвалы в начале и мотивации в конце.</p>
+      <p>если хочешь короткие ответы на короткие вопросы — напиши это прямо. иначе на «как дела с проектом?» получишь простыню на десять абзацев.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- БЛОК 5 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">5</span>
+      <span class="level-title">как писать тексты</span>
+    </div>
+    <p class="level-sub">ритм и список того, что запрещено</p>
+    <div class="level-body">
+      <p>опиши ритм: чередование длины предложений, наличие мнения, конкретики, цифр — а не сухое перечисление фактов.</p>
+      <p>добавь список слов-маркеров нейросети и попроси их не использовать. база, которую можно взять за основу и дополнить своими:</p>
+      <p><em>«является» → «это». «данный» → «этот». «осуществлять» → «делать». «в рамках» → убрать. «стоит отметить», «важно подчеркнуть», «нельзя не упомянуть» → убрать полностью. «не только x, но и y» → убрать параллелизм. «надеюсь, это поможет», «отличный вопрос!» → никогда не писать.</em></p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- БЛОК 6 -->
+  <div class="level">
+    <div class="level-head">
+      <span class="level-num">6</span>
+      <span class="level-title">тональность</span>
+    </div>
+    <p class="level-sub">покажи, а не опиши</p>
+    <div class="level-body">
+      <p>описание тона в прилагательных работает хуже живого примера. «прямой и уверенный тон» claude интерпретирует как угодно.</p>
+      <p>добавь 2–3 предложения — отрывок текста, который звучит ровно как ты. claude ориентируется на образец точнее, чем на список характеристик.</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:8px">
+    <p><strong>главная ошибка</strong> — писать туда мечту о себе, а не факты о себе. claude тогда достраивает уверенность, которой на самом деле нет, — и это чувствуется в каждом ответе. поле в настройках — рабочий инструмент, а не резюме для нетворкинга.</p>
+  </div>
+
+  <hr class="divider">
+
+  <p class="section-label">готовый пример — виктория гладышева</p>
+  <div class="example-box">
+    <span class="tpl-label">для ориентира, не для копирования один в один</span>
+    <pre style="margin-top:16px"><b>## КТО Я</b>
+Маркетолог и архитектор систем роста, основатель международной компании WIKKI.OCEAN. Мне 20 лет. В 12 лет создала первый бизнес на ручных изделиях. За 5 лет поработала с 70+ проектами на российском и международном рынке. В 17 лет впервые улетела за границу, в 18 переехала в Москву, жила в Грузии. Готовится к поступлению в американскую бизнес-школу. Любит единоборства и изучать океан.
+
+Ключевые проекты: руководила digital-командой кандидата в президенты (детали под NDA), организовала офлайн-тренинг в Москве на 100+ участниц с выручкой $40 000. Цель — Forbes 30u30 и миллиардный оборот за 10 лет.
+
+<b>## МОЯ КОМПАНИЯ</b>
+WIKKI.OCEAN — маркетинг, который строит влияние, и AI-архитектура, которая закрывает задачи целых отделов: агенты, программирование и автоматизация любых бизнес-процессов. Личный бренд — @wikki.shark.
+
+<b>## МОЯ ФИЛОСОФИЯ</b>
+Каждый бизнес — это океан потенциала. Потенциал океана равно потенциал человека. Моя задача — превратить этот потенциал в систему. Не большая команда и пахота, а правильно выстроенная архитектура.
+
+<b>## КАК ОТВЕЧАТЬ</b>
+Говори как со-основатель, а не ассистент. Давай одно чёткое решение — не предлагай пять вариантов. Если идея слабая — скажи прямо и объясни почему. Не начинай ответ с похвалы и не заканчивай мотивационными фразами. Короткий вопрос требует короткого ответа. Язык по умолчанию — русский.
+
+<b>## КАК ПИСАТЬ ТЕКСТЫ</b>
+Чередуй короткие и длинные предложения — не все одной длины. Пиши с позицией и мнением, не перечисляй факты. Используй конкретику — цифры, механику, примеры.
+
+<b>## ТОНАЛЬНОСТЬ</b>
+Виктория пишет и говорит прямо — без разогрева и без финальных выводов в духе «главное верить в себя». Называет цифры когда они есть. Признаёт неопределённость когда она есть.</pre>
+  </div>
+
+  <!-- WIKKI.OCEAN CTA -->
+  <div class="cta-block">
+    <p class="cta-eyebrow">следующий шаг</p>
+    <h3>Шаблон — это фундамент. Дальше вопрос, что строить поверх него в твоей ситуации.</h3>
+    <p>Профиль в настройках работает одинаково для всех. Проекты, коннекторы, автоматизации под конкретный бизнес — уже нет.</p>
+    <p>В Telegram я делюсь тем, что работает в реальных проектах — без воды и инфобизнесовых схем. Приходи разбираться.</p>
+    <a class="cta-btn" href="https://t.me/wikki_shark" target="_blank">@wikki.shark →</a>
+  </div>
+
+  <!-- WIKKI.OCEAN MODAL -->
+  <div class="wo-modal-overlay" id="wo-overlay">
+    <div class="wo-modal" role="dialog" aria-modal="true" aria-labelledby="wo-modal-title">
+      <button class="wo-modal-close" id="wo-close-btn" type="button" aria-label="Закрыть">✕</button>
+
+      <div id="wo-form-wrap">
+        <p class="wo-modal-eyebrow">заявка</p>
+        <h3 id="wo-modal-title">Заявка на разбор</h3>
+        <p class="wo-modal-desc">Опиши, что происходит сейчас, — отвечу лично и разберу именно твой случай.</p>
+
+        <form id="wo-form" class="wo-form" action="https://docs.google.com/forms/d/e/1FAIpQLSd-a5-CHpZNwLvAD1YZuwGQDNSIjNFQaMB5eFdwIvWj3OtCLg/formResponse" method="POST" target="wo-hidden-frame">
+          <div class="wo-field">
+            <label for="wo-name">имя</label>
+            <input class="wo-input" type="text" id="wo-name" name="entry.1994539439" placeholder="Как к тебе обращаться" required>
+          </div>
+          <div class="wo-field">
+            <label for="wo-contact">контакт для связи</label>
+            <input class="wo-input" type="text" id="wo-contact" name="entry.1074568097" placeholder="Telegram или номер" required>
+          </div>
+          <div class="wo-field">
+            <label>что интересует</label>
+            <div class="wo-checks">
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Практикум &quot;Океан Влияния&quot;"><span>практикум «океан влияния»</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Контент-завод под ключ"><span>контент-завод под ключ</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="AI-автоматизации"><span>ai-автоматизации</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Личная работа"><span>личная работа</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Не определился(-ась)"><span>ещё не определился(-ась)</span></label>
+            </div>
+            <p class="wo-error" id="wo-check-error">выбери хотя бы один вариант</p>
+          </div>
+          <div class="wo-field">
+            <label for="wo-request">какой запрос</label>
+            <textarea class="wo-textarea" id="wo-request" name="entry.1982844077" placeholder="Что сейчас происходит, что хочешь построить" required></textarea>
+          </div>
+          <button class="wo-submit" type="submit" id="wo-submit">отправить заявку</button>
+        </form>
+      </div>
+
+      <div class="wo-success" id="wo-success">
+        <p>Заявка отправлена</p>
+        <span>Отвечу в течение 24 часов.</span>
+      </div>
+      <iframe name="wo-hidden-frame" style="display:none" title="wo-hidden-frame"></iframe>
+    </div>
+  </div>
+
+  <!-- MORE RESOURCES -->
+  <div class="more-section">
+    <p class="more-label">ещё материалы</p>
+    <div class="more-grid">
+      <a class="more-card" href="claude-guide.html">
+        <p class="more-card-label">руководство</p>
+        <p class="more-card-title">5 уровней claude — от чата до системы</p>
+      </a>
+      <a class="more-card" href="claude-registration.html">
+        <p class="more-card-label">гайд</p>
+        <p class="more-card-title">старт в claude — доступ, аккаунт, оплата</p>
+      </a>
+      <a class="more-card" href="https://t.me/wikki_shark">
+        <p class="more-card-label">telegram</p>
+        <p class="more-card-title">канал wikki.shark — обновления, кейсы, инструменты</p>
+      </a>
+      <a class="more-card" href="library.html">
+        <p class="more-card-label">библиотека</p>
+        <p class="more-card-title">все бесплатные материалы в одном месте</p>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <img src="wikki-logo-mark.png" alt="wikki.ocean" class="footer-logo">
+</footer>
+
+<script>
+(function(){
+  var overlay=document.getElementById('wo-overlay');
+  var closeBtn=document.getElementById('wo-close-btn');
+  function closeModal(){overlay.classList.remove('open');document.body.classList.remove('wo-modal-lock');}
+  closeBtn.addEventListener('click',closeModal);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closeModal();});
+
+  var form=document.getElementById('wo-form');
+  var formWrap=document.getElementById('wo-form-wrap');
+  var checkError=document.getElementById('wo-check-error');
+  var submitBtn=document.getElementById('wo-submit');
+  form.addEventListener('submit',function(e){
+    var checked=form.querySelectorAll('input[name="entry.1345489343"]:checked');
+    if(checked.length===0){
+      e.preventDefault();
+      checkError.classList.add('show');
+      return;
+    }
+    checkError.classList.remove('show');
+    submitBtn.disabled=true;
+    submitBtn.textContent='отправляю…';
+    setTimeout(function(){
+      formWrap.style.display='none';
+      document.getElementById('wo-success').classList.add('show');
+    },700);
+  });
+
+  var copyBtn=document.getElementById('tpl-copy-btn');
+  var tplSource=document.getElementById('tpl-source');
+  copyBtn.addEventListener('click',function(){
+    var text=tplSource.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      copyBtn.textContent='скопировано';
+      copyBtn.classList.add('copied');
+      setTimeout(function(){
+        copyBtn.textContent='скопировать шаблон';
+        copyBtn.classList.remove('copied');
+      },2000);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
