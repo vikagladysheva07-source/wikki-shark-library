@@ -44,7 +44,7 @@ main{max-width:680px;margin:0 auto;padding:100px 32px 120px}
 .back-link:hover{color:var(--ivory)}
 
 /* h1 */
-h1{font-size:clamp(40px,6vw,64px);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:24px;text-transform:lowercase}
+h1{font-size:clamp(40px,6vw,64px);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:24px}
 h1 span{color:var(--purple-br)}
 
 /* desc */
@@ -52,14 +52,14 @@ h1 span{color:var(--purple-br)}
 .desc em{font-style:normal;color:var(--teal-br)}
 
 /* section label */
-.section-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:lowercase;margin-bottom:40px}
+.section-label{font-size:11px;color:var(--idd);letter-spacing:.14em;margin-bottom:40px}
 
 /* level (reused as "этап") */
 .level{margin-bottom:64px}
 .level-head{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
 .level-num{font-size:clamp(56px,8vw,96px);font-weight:900;line-height:1;letter-spacing:-.05em;color:var(--purple-br);opacity:.25;flex-shrink:0}
-.level-title{font-size:24px;font-weight:700;letter-spacing:-.02em;text-transform:lowercase}
-.level-sub{font-size:13px;color:var(--teal-br);font-weight:500;text-transform:lowercase;margin-bottom:16px;letter-spacing:.02em}
+.level-title{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.level-sub{font-size:13px;color:var(--teal-br);font-weight:500;margin-bottom:16px;letter-spacing:.02em}
 .level-body{font-size:15px;color:var(--id);line-height:1.75;max-width:580px}
 .level-body p{margin-bottom:12px}
 .level-body p:last-child{margin-bottom:0}
@@ -119,7 +119,7 @@ body.wo-modal-lock{overflow:hidden}
 /* custom form */
 .wo-form{max-width:480px;margin-top:0}
 .wo-field{margin-bottom:14px}
-.wo-field>label{display:block;font-size:11px;color:var(--idd);letter-spacing:.06em;text-transform:lowercase;margin-bottom:8px}
+.wo-field>label{display:block;font-size:11px;color:var(--idd);letter-spacing:.06em;margin-bottom:8px}
 .wo-input,.wo-textarea{width:100%;padding:14px 16px;background:rgba(242,237,226,.03);border:1px solid var(--line);border-radius:10px;color:var(--ivory);font-family:var(--font);font-size:14px;transition:border-color .2s,background .2s}
 .wo-input:focus,.wo-textarea:focus{outline:none;border-color:var(--purple);background:rgba(155,111,232,.05)}
 .wo-input::placeholder,.wo-textarea::placeholder{color:var(--idd)}
@@ -145,12 +145,12 @@ body.wo-modal-lock{overflow:hidden}
 
 /* more resources */
 .more-section{margin-top:96px}
-.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:lowercase;margin-bottom:32px}
+.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;margin-bottom:32px}
 .more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
 .more-card{display:block;padding:24px;border:1px solid var(--line);border-radius:8px;transition:border-color .35s cubic-bezier(.16,1,.3,1),background .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
 .more-card:hover{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.04);transform:translateY(-3px);box-shadow:0 24px 48px -24px rgba(0,0,0,.6)}
-.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;text-transform:lowercase;margin-bottom:10px}
-.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3;text-transform:lowercase}
+.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;margin-bottom:10px}
+.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3}
 
 /* footer */
 footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center}
@@ -171,30 +171,30 @@ footer span{font-size:12px;color:var(--idd)}
 
 <main>
 
-  <a href="library.html" class="back-link">← библиотека ресурсов</a>
+  <a href="library.html" class="back-link">← Библиотека ресурсов</a>
 
-  <h1>старт<br><span>в claude</span></h1>
+  <h1>Старт<br><span>в Claude</span></h1>
 
   <p class="desc">
-    для тех, кто хочет начать работать в Claude и разобраться: как зарегистрироваться и оплатить подписку из России или СНГ — по порядку, <em>без блокировок и потерянных денег</em>.
+    Для тех, кто хочет начать работать в Claude и разобраться: как зарегистрироваться и оплатить подписку из России или СНГ — по порядку, <em>без блокировок и потерянных денег</em>.
   </p>
 
-  <p class="section-label">план по этапам</p>
+  <p class="section-label">План по этапам</p>
 
   <!-- ЭТАП 1 — VPN -->
   <div class="level">
     <div class="level-head">
       <span class="level-num">1</span>
-      <span class="level-title">vpn</span>
+      <span class="level-title">VPN</span>
     </div>
-    <p class="level-sub">без него дальше идти бессмысленно</p>
+    <p class="level-sub">Без него дальше идти бессмысленно</p>
     <div class="level-body">
-      <p>claude.ai определяет регион по IP. без смены региона либо не откроется регистрация, либо позже отвалится оплата — поэтому это не опциональный шаг, а первый.</p>
-      <p>главное — не менять страну VPN между регистрацией и оплатой. система видит разные страны на одном аккаунте как подозрительную активность и блокирует его ещё до того, как получится разобраться, что произошло.</p>
+      <p>Claude.ai определяет регион по IP. Без смены региона либо не откроется регистрация, либо позже отвалится оплата — поэтому это не опциональный шаг, а первый.</p>
+      <p>Главное — не менять страну VPN между регистрацией и оплатой. Система видит разные страны на одном аккаунте как подозрительную активность и блокирует его ещё до того, как получится разобраться, что произошло.</p>
     </div>
     <div class="steps">
-      <div class="step"><span class="step-n">1</span><span class="step-text">поставить VPN — рекомендация: <a href="https://t.me/FelixVPNbot?start=4d9785f8-c2b8-4d9c-b73a-281a85d1b5e7" target="_blank" rel="noopener">FelixVPN</a> (бот в Telegram, есть инструкция под Windows и Mac)</span></div>
-      <div class="step"><span class="step-n">2</span><span class="step-text">в приложении выбрать сервер — <strong>США</strong>: с этой страной Claude работает стабильнее всего, меньше сбоев на регистрации и оплате</span></div>
+      <div class="step"><span class="step-n">1</span><span class="step-text">Поставить VPN — рекомендация: <a href="https://t.me/FelixVPNbot?start=4d9785f8-c2b8-4d9c-b73a-281a85d1b5e7" target="_blank" rel="noopener">FelixVPN</a> (бот в Telegram, есть инструкция под Windows и Mac)</span></div>
+      <div class="step"><span class="step-n">2</span><span class="step-text">В приложении выбрать сервер — <strong>США</strong>: с этой страной Claude работает стабильнее всего, меньше сбоев на регистрации и оплате</span></div>
     </div>
   </div>
 
@@ -204,15 +204,15 @@ footer span{font-size:12px;color:var(--idd)}
   <div class="level">
     <div class="level-head">
       <span class="level-num">2</span>
-      <span class="level-title">загрузка claude</span>
+      <span class="level-title">Загрузка Claude</span>
     </div>
-    <p class="level-sub">приложение для ноутбука</p>
+    <p class="level-sub">Приложение для ноутбука</p>
     <div class="level-body">
-      <p>Claude работает и в браузере, и отдельным приложением для компьютера. с приложением удобнее — оно не теряется среди вкладок и не разлогинивает при смене VPN.</p>
+      <p>Claude работает и в браузере, и отдельным приложением для компьютера. С приложением удобнее — оно не теряется среди вкладок и не разлогинивает при смене VPN.</p>
     </div>
     <div class="steps">
-      <div class="step"><span class="step-n">1</span><span class="step-text">скачать Claude на ноутбук — приложение на <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>, доступно для Windows и Mac</span></div>
-      <div class="step"><span class="step-n">2</span><span class="step-text">для вкладок <strong>Cowork</strong> и <strong>Code</strong> нужна платная подписка — Pro, Max или Team, на бесплатном тарифе они не работают; на Windows дополнительно нужно установить <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">Git for Windows</a> и перезапустить приложение; на Mac обычно уже есть — проверяется командой <code>git --version</code> в Терминале, если его нет, macOS предложит установить</span></div>
+      <div class="step"><span class="step-n">1</span><span class="step-text">Скачать Claude на ноутбук — приложение на <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>, доступно для Windows и Mac</span></div>
+      <div class="step"><span class="step-n">2</span><span class="step-text">Для вкладок <strong>Cowork</strong> и <strong>Code</strong> нужна платная подписка — Pro, Max или Team, на бесплатном тарифе они не работают; на Windows дополнительно нужно установить <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">Git for Windows</a> и перезапустить приложение; на Mac обычно уже есть — проверяется командой <code>git --version</code> в Терминале, если его нет, macOS предложит установить</span></div>
     </div>
   </div>
 
@@ -222,17 +222,17 @@ footer span{font-size:12px;color:var(--idd)}
   <div class="level">
     <div class="level-head">
       <span class="level-num">3</span>
-      <span class="level-title">регистрация</span>
+      <span class="level-title">Регистрация</span>
     </div>
-    <p class="level-sub">почта, телефон, первый вход</p>
+    <p class="level-sub">Почта, телефон, первый вход</p>
     <div class="level-body">
-      <p>сама регистрация простая — email, код из письма, иногда подтверждение по SMS. основные проблемы возникают не на этом шаге, а из-за того, что было (или не было) сделано на первом.</p>
+      <p>Сама регистрация простая — email, код из письма, иногда подтверждение по SMS. Основные проблемы возникают не на этом шаге, а из-за того, что было (или не было) сделано на первом.</p>
     </div>
     <div class="steps">
-      <div class="step"><span class="step-n">1</span><span class="step-text">завести почту — Gmail подходит; для отдельного аккаунта от личной переписки лучше новую</span></div>
-      <div class="step"><span class="step-n">2</span><span class="step-text">ввести почту на claude.ai, подтвердить код из письма</span></div>
-      <div class="step"><span class="step-n">3</span><span class="step-text">если попросят номер телефона — подойдёт только номер другой страны, способный принять SMS; номера РФ верификацию не проходят</span></div>
-      <div class="step"><span class="step-n">4</span><span class="step-text">не привязывать один номер или почту сразу к нескольким аккаунтам — частый триггер блокировки</span></div>
+      <div class="step"><span class="step-n">1</span><span class="step-text">Завести почту — Gmail подходит; для отдельного аккаунта от личной переписки лучше новую</span></div>
+      <div class="step"><span class="step-n">2</span><span class="step-text">Ввести почту на claude.ai, подтвердить код из письма</span></div>
+      <div class="step"><span class="step-n">3</span><span class="step-text">Если попросят номер телефона — подойдёт только номер другой страны, способный принять SMS; номера РФ верификацию не проходят</span></div>
+      <div class="step"><span class="step-n">4</span><span class="step-text">Не привязывать один номер или почту сразу к нескольким аккаунтам — частый триггер блокировки</span></div>
     </div>
   </div>
 
@@ -242,32 +242,32 @@ footer span{font-size:12px;color:var(--idd)}
   <div class="level">
     <div class="level-head">
       <span class="level-num">4</span>
-      <span class="level-title">оплата подписки</span>
+      <span class="level-title">Оплата подписки</span>
     </div>
-    <p class="level-sub">самое больное место — но решаемое</p>
+    <p class="level-sub">Самое больное место — но решаемое</p>
     <div class="level-body">
-      <p>карты Visa и Mastercard, выпущенные российскими банками, не работают на зарубежных сайтах с 2022 года — это ограничение платёжных систем, а не Anthropic. поэтому нужен способ оплаты в валюте, отдельный от обычной карты.</p>
-      <p>вариантов три. у каждого свои плюсы и своя цена ошибки.</p>
+      <p>Карты Visa и Mastercard, выпущенные российскими банками, не работают на зарубежных сайтах с 2022 года — это ограничение платёжных систем, а не Anthropic. Поэтому нужен способ оплаты в валюте, отдельный от обычной карты.</p>
+      <p>Вариантов три. У каждого свои плюсы и своя цена ошибки.</p>
     </div>
     <div class="options">
       <div class="option">
-        <div class="option-head"><span class="option-num">1</span><span class="option-title">карта банка другой страны</span></div>
-        <p>если уже есть счёт в Армении, Казахстане, Кыргызстане, Грузии или ОАЭ — карта привязывается напрямую, без посредников. самый надёжный вариант, но требует, чтобы счёт уже существовал.</p>
+        <div class="option-head"><span class="option-num">1</span><span class="option-title">Карта банка другой страны</span></div>
+        <p>Если уже есть счёт в Армении, Казахстане, Кыргызстане, Грузии или ОАЭ — карта привязывается напрямую, без посредников. Самый надёжный вариант, но требует, чтобы счёт уже существовал.</p>
       </div>
       <div class="option">
-        <div class="option-head"><span class="option-num">2</span><span class="option-title">виртуальная карта через сервис для зарубежных подписок</span></div>
-        <p>пополнение в рублях, взамен — виртуальный Visa или Mastercard для международных платежей. один из вариантов — <a href="https://platipomiru.com/?code=DRSLADBV" target="_blank" rel="noopener">platipomiru.com</a>. такие сервисы часто меняют условия или закрываются — перед тем как заводить деньги, стоит проверить свежие отзывы за последний месяц и не заводить сразу крупную сумму, сначала протестировать на маленьком платеже.</p>
+        <div class="option-head"><span class="option-num">2</span><span class="option-title">Виртуальная карта через сервис для зарубежных подписок</span></div>
+        <p>Пополнение в рублях, взамен — виртуальный Visa или Mastercard для международных платежей. Один из вариантов — <a href="https://platipomiru.com/?code=DRSLADBV" target="_blank" rel="noopener">platipomiru.com</a>. Такие сервисы часто меняют условия или закрываются — перед тем как заводить деньги, стоит проверить свежие отзывы за последний месяц и не заводить сразу крупную сумму, сначала протестировать на маленьком платеже.</p>
       </div>
       <div class="option">
-        <div class="option-head"><span class="option-num">3</span><span class="option-title">попросить оплатить того, у кого есть карта за рубежом</span></div>
-        <p>друг, родственник, коллега оплачивает — деньги возвращаются ему в рублях. самый простой способ, если такой человек есть, но зависит от чужой доступности и доверия.</p>
+        <div class="option-head"><span class="option-num">3</span><span class="option-title">Попросить оплатить того, у кого есть карта за рубежом</span></div>
+        <p>Друг, родственник, коллега оплачивает — деньги возвращаются ему в рублях. Самый простой способ, если такой человек есть, но зависит от чужой доступности и доверия.</p>
       </div>
     </div>
     <div class="note">
-      <p><strong>про готовые аккаунты и шеринг подписки:</strong> покупка чужого аккаунта или совместное использование одной подписки на нескольких человек — прямое нарушение правил Anthropic. аккаунт блокируют без возврата денег, и предсказать момент блокировки нельзя.</p>
+      <p><strong>Про готовые аккаунты и шеринг подписки:</strong> покупка чужого аккаунта или совместное использование одной подписки на нескольких человек — прямое нарушение правил Anthropic. Аккаунт блокируют без возврата денег, и предсказать момент блокировки нельзя.</p>
     </div>
     <div class="note" style="margin-top:12px">
-      <p><strong>это меняется быстрее, чем страницы гайдов.</strong> рабочий способ оплаты полгода назад и сейчас может отличаться — рынок таких сервисов живёт короткими циклами. перед тем как переводить крупную сумму, свериться в актуальных обсуждениях стоит всегда.</p>
+      <p><strong>Это меняется быстрее, чем страницы гайдов.</strong> Рабочий способ оплаты полгода назад и сейчас может отличаться — рынок таких сервисов живёт короткими циклами. Перед тем как переводить крупную сумму, свериться в актуальных обсуждениях стоит всегда.</p>
     </div>
   </div>
 
@@ -277,23 +277,23 @@ footer span{font-size:12px;color:var(--idd)}
   <div class="level">
     <div class="level-head">
       <span class="level-num">5</span>
-      <span class="level-title">частые проблемы</span>
+      <span class="level-title">Частые проблемы</span>
     </div>
-    <p class="level-sub">и что с ними делать</p>
+    <p class="level-sub">И что с ними делать</p>
     <div class="steps">
-      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>оплата отклонена</strong> — на виртуальной карте должно быть с запасом сверху: курсовая разница и комиссия сервиса съедают больше, чем стоит сама подписка</span></div>
-      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>аккаунт заблокирован сразу после оплаты</strong> — чаще всего из-за смены IP или страны между регистрацией и оплатой; стоит держать одну и ту же страну VPN на каждом этапе</span></div>
-      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>письмо о подозрительной активности</strong> — обычно достаточно подтвердить вход по ссылке из письма, паниковать не нужно</span></div>
+      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>Оплата отклонена</strong> — на виртуальной карте должно быть с запасом сверху: курсовая разница и комиссия сервиса съедают больше, чем стоит сама подписка</span></div>
+      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>Аккаунт заблокирован сразу после оплаты</strong> — чаще всего из-за смены IP или страны между регистрацией и оплатой; стоит держать одну и ту же страну VPN на каждом этапе</span></div>
+      <div class="step"><span class="step-n">→</span><span class="step-text"><strong>Письмо о подозрительной активности</strong> — обычно достаточно подтвердить вход по ссылке из письма, паниковать не нужно</span></div>
     </div>
   </div>
 
   <!-- WIKKI.OCEAN CTA -->
   <div class="cta-block">
-    <p class="cta-eyebrow">аккаунт настроен — дальше что?</p>
+    <p class="cta-eyebrow">Аккаунт настроен — дальше что?</p>
     <h3>Доступ есть. Вопрос в том, как встроить Claude в свою работу.</h3>
     <p>Зарегистрироваться и оплатить — техническая часть. Дальше начинается настоящая работа: что автоматизировать первым, как выстроить систему под свою задачу — бизнес это или личный бренд.</p>
     <p>Описание ситуации — отвечу лично и разберу конкретный случай.</p>
-    <button class="cta-btn" type="button" id="wo-open-btn">разобрать ситуацию →</button>
+    <button class="cta-btn" type="button" id="wo-open-btn">Разобрать ситуацию →</button>
   </div>
 
   <!-- WIKKI.OCEAN MODAL -->
@@ -302,35 +302,35 @@ footer span{font-size:12px;color:var(--idd)}
       <button class="wo-modal-close" id="wo-close-btn" type="button" aria-label="Закрыть">✕</button>
 
       <div id="wo-form-wrap">
-        <p class="wo-modal-eyebrow">заявка</p>
+        <p class="wo-modal-eyebrow">Заявка</p>
         <h3 id="wo-modal-title">Заявка на разбор</h3>
         <p class="wo-modal-desc">Описание ситуации — отвечу лично и разберу конкретный случай.</p>
 
         <form id="wo-form" class="wo-form" action="https://docs.google.com/forms/d/e/1FAIpQLSd-a5-CHpZNwLvAD1YZuwGQDNSIjNFQaMB5eFdwIvWj3OtCLg/formResponse" method="POST" target="wo-hidden-frame">
           <div class="wo-field">
-            <label for="wo-name">имя</label>
+            <label for="wo-name">Имя</label>
             <input class="wo-input" type="text" id="wo-name" name="entry.1994539439" placeholder="Имя или обращение" required>
           </div>
           <div class="wo-field">
-            <label for="wo-contact">контакт для связи</label>
+            <label for="wo-contact">Контакт для связи</label>
             <input class="wo-input" type="text" id="wo-contact" name="entry.1074568097" placeholder="Telegram или номер" required>
           </div>
           <div class="wo-field">
-            <label>что интересует</label>
+            <label>Что интересует</label>
             <div class="wo-checks">
-              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Практикум &quot;Океан Влияния&quot;"><span>практикум «океан влияния»</span></label>
-              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Контент-завод под ключ"><span>контент-завод под ключ</span></label>
-              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="AI-автоматизации"><span>ai-автоматизации</span></label>
-              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Личная работа"><span>личная работа</span></label>
-              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Не определился(-ась)"><span>ещё не определился(-ась)</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Практикум &quot;Океан Влияния&quot;"><span>Практикум «Океан влияния»</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Контент-завод под ключ"><span>Контент-завод под ключ</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="AI-автоматизации"><span>AI-автоматизации</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Личная работа"><span>Личная работа</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Не определился(-ась)"><span>Ещё не определился(-ась)</span></label>
             </div>
-            <p class="wo-error" id="wo-check-error">нужно выбрать хотя бы один вариант</p>
+            <p class="wo-error" id="wo-check-error">Нужно выбрать хотя бы один вариант</p>
           </div>
           <div class="wo-field">
-            <label for="wo-request">какой запрос</label>
+            <label for="wo-request">Какой запрос</label>
             <textarea class="wo-textarea" id="wo-request" name="entry.1982844077" placeholder="Что сейчас происходит и что нужно построить" required></textarea>
           </div>
-          <button class="wo-submit" type="submit" id="wo-submit">отправить заявку</button>
+          <button class="wo-submit" type="submit" id="wo-submit">Отправить заявку</button>
         </form>
       </div>
 
@@ -366,7 +366,7 @@ footer span{font-size:12px;color:var(--idd)}
       }
       checkError.classList.remove('show');
       submitBtn.disabled=true;
-      submitBtn.textContent='отправляю…';
+      submitBtn.textContent='Отправляю…';
       setTimeout(function(){
         formWrap.style.display='none';
         document.getElementById('wo-success').classList.add('show');
@@ -377,11 +377,11 @@ footer span{font-size:12px;color:var(--idd)}
 
   <!-- MORE RESOURCES -->
   <div class="more-section">
-    <p class="more-label">ещё материалы</p>
+    <p class="more-label">Ещё материалы</p>
     <div class="more-grid">
       <a class="more-card" href="claude-guide.html">
-        <p class="more-card-label">гайд</p>
-        <p class="more-card-title">5 уровней claude — от чата до системы</p>
+        <p class="more-card-label">Гайд</p>
+        <p class="more-card-title">5 уровней Claude — от чата до системы</p>
       </a>
     </div>
   </div>
