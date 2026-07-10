@@ -68,6 +68,8 @@ h1 span{color:var(--purple-br)}
 .loc p{font-size:15px;color:var(--id);line-height:1.75;margin-bottom:12px}
 .loc p:last-child{margin-bottom:0}
 .loc code{font-family:var(--mono);font-size:13px;color:var(--teal-br);background:rgba(0,196,212,.08);padding:2px 7px;border-radius:5px}
+.screenshot-box{margin-top:20px;padding:8px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.4);box-shadow:0 20px 44px -28px rgba(0,0,0,.7),inset 0 1px 0 rgba(242,237,226,.04)}
+.screenshot-box img{display:block;width:100%;height:auto;border-radius:8px}
 
 /* template box */
 .tpl-box{margin:24px 0 64px;padding:28px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.55);box-shadow:inset 0 1px 0 rgba(242,237,226,.04),0 20px 44px -28px rgba(0,0,0,.7)}
@@ -191,8 +193,11 @@ footer span{font-size:12px;color:var(--idd)}
 
   <p class="section-label">Где это находится</p>
   <div class="loc">
-    <p>Настройки → раздел <code>Profile</code> → поле <code>Personal preferences</code>. Интерфейс Claude только на английском — русской версии нет.</p>
+    <p>Настройки → раздел <code>Profile</code> → поле <code>Instructions for Claude</code>. Интерфейс Claude только на английском — русской версии нет.</p>
     <p>Заполняется один раз — работает во всех чатах аккаунта, а не в одном проекте.</p>
+    <div class="screenshot-box">
+      <img src="claude-instructions-field.png" alt="Поле Instructions for Claude в настройках Claude">
+    </div>
   </div>
 
   <p class="section-label">Шаблон — скопируй и заполни</p>
