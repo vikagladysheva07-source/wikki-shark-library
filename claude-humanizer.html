@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как убрать ИИ из текста — готовый промт — wikki.ocean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#050508;
+  --surface:#0D1A26;
+  --ivory:#F2EDE2;
+  --id:rgba(255,255,255,.87);
+  --id2:rgba(255,255,255,.6);
+  --idd:rgba(255,255,255,.38);
+  --line:rgba(242,237,226,.10);
+  --purple:#9B6FE8;--purple-br:#C4A4FF;
+  --teal:#00C4D4;--teal-br:#5EE0EE;
+  --font:'DM Sans',system-ui,-apple-system,sans-serif;
+  --mono:'SFMono-Regular',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);color:var(--ivory);-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-color:var(--black);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:120px 120px;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── ORBS (ambient glow) ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:-1}
+.orb-purple{background:radial-gradient(circle,rgba(155,111,232,.26) 0%,rgba(91,47,190,.09) 70%)}
+.orb-teal{background:radial-gradient(circle,rgba(0,196,212,.20) 0%,rgba(0,196,212,.05) 70%)}
+
+/* back link */
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--idd);margin-bottom:32px;transition:color .2s}
+.back-link:hover{color:var(--ivory)}
+
+/* main */
+main{max-width:680px;margin:0 auto;padding:100px 32px 120px}
+
+/* h1 */
+h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:-.04em;margin-bottom:24px;text-transform:uppercase;background:linear-gradient(135deg,var(--ivory) 0%,var(--purple-br) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* desc */
+.desc{font-size:16px;color:var(--id);line-height:1.7;max-width:540px;margin-bottom:48px}
+.desc em{font-style:normal;color:var(--teal-br)}
+
+/* section label */
+.section-label{font-size:11px;color:var(--idd);letter-spacing:.14em;margin-bottom:24px}
+
+/* note */
+.note{padding:20px 24px;border-left:2px solid var(--purple);background:linear-gradient(90deg,rgba(155,111,232,.08),rgba(155,111,232,.02));margin-bottom:48px;border-radius:0 4px 4px 0;box-shadow:0 16px 32px -24px rgba(0,0,0,.55)}
+.note p{font-size:14px;color:var(--id);line-height:1.65}
+.note strong{color:var(--ivory)}
+.note code{font-family:var(--mono);font-size:12.5px;color:var(--teal-br);background:rgba(0,196,212,.08);padding:2px 6px;border-radius:5px}
+
+/* prompt box */
+.tpl-box{margin:24px 0 48px;padding:28px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.55);box-shadow:inset 0 1px 0 rgba(242,237,226,.04),0 20px 44px -28px rgba(0,0,0,.7)}
+.tpl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px}
+.tpl-label{font-size:11px;color:var(--idd);letter-spacing:.12em}
+.tpl-copy{font-size:12px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.3);border-radius:100px;padding:8px 16px;cursor:pointer;transition:background .2s ease,border-color .2s ease,transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .2s ease;font-family:var(--font);white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.tpl-copy:hover{background:rgba(155,111,232,.2);border-color:rgba(155,111,232,.55);transform:translateY(-1px);box-shadow:0 6px 16px -8px rgba(155,111,232,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.tpl-copy:active{transform:translateY(0);background:rgba(155,111,232,.14)}
+.tpl-copy:focus-visible{outline:2px solid var(--purple-br);outline-offset:2px}
+.tpl-copy.copied{color:var(--teal-br);border-color:rgba(0,196,212,.4);background:rgba(0,196,212,.1)}
+.tpl-box pre{font-family:var(--mono);font-size:12.5px;line-height:1.8;color:var(--id2);white-space:pre-wrap;word-break:break-word}
+.tpl-box pre b{color:var(--ivory);font-weight:700}
+.tpl-ph{color:var(--teal-br)}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;margin-bottom:64px}
+.chip{font-size:12.5px;color:var(--id2);background:rgba(242,237,226,.04);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-family:var(--mono)}
+
+/* before/after */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 64px}
+.ba-card{padding:22px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.4)}
+.ba-card.after{border-color:rgba(155,111,232,.25);background:linear-gradient(165deg,rgba(155,111,232,.06),rgba(0,196,212,.015))}
+.ba-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;color:var(--idd)}
+.ba-card.after .ba-label{color:var(--purple-br)}
+.ba-card p{font-size:14px;line-height:1.65;color:var(--id2)}
+.ba-card.after p{color:var(--id)}
+
+/* divider */
+.divider{border:none;height:1px;margin:0 0 64px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent)}
+
+/* body text */
+.body{font-size:15px;color:var(--id);line-height:1.75;max-width:580px;margin-bottom:64px}
+.body p{margin-bottom:12px}
+.body p:last-child{margin-bottom:0}
+.body em{font-style:normal;color:var(--ivory)}
+
+/* CTA */
+.cta-block{margin-top:24px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(0,196,212,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
+.cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:uppercase}
+.cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
+.cta-btn{display:inline-flex;align-items:center;gap:13px;font-size:14px;font-weight:700;color:var(--black);background:linear-gradient(180deg,var(--purple-br),var(--purple));padding:8px 28px 8px 8px;border-radius:100px;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,filter .2s ease;border:none;cursor:pointer;font-family:var(--font);box-shadow:0 1px 2px rgba(0,0,0,.25),0 10px 24px -10px rgba(155,111,232,.6),inset 0 1px 0 rgba(255,255,255,.3)}
+.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 2px 6px rgba(0,0,0,.25),0 18px 34px -10px rgba(155,111,232,.78),inset 0 1px 0 rgba(255,255,255,.38)}
+.cta-btn:active{transform:translateY(0);filter:brightness(.97);box-shadow:0 1px 2px rgba(0,0,0,.3),0 4px 12px -6px rgba(155,111,232,.5),inset 0 1px 0 rgba(255,255,255,.2)}
+.cta-btn:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
+.cta-btn-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(5,5,8,.16);flex-shrink:0;transition:background .2s ease}
+.cta-btn:hover .cta-btn-icon{background:rgba(5,5,8,.22)}
+.cta-btn svg{width:17px;height:17px;flex-shrink:0}
+
+/* more resources */
+.more-section{margin-top:96px}
+.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;margin-bottom:32px}
+.more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.more-card{display:block;padding:24px;border:1px solid var(--line);border-radius:8px;transition:border-color .35s cubic-bezier(.16,1,.3,1),background .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
+.more-card:hover{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.04);transform:translateY(-3px);box-shadow:0 24px 48px -24px rgba(0,0,0,.6),0 0 0 1px rgba(155,111,232,.08)}
+.more-card:active{transform:translateY(-1px);transition-duration:.1s}
+.more-card:focus-visible{outline:2px solid var(--purple-br);outline-offset:2px}
+.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;margin-bottom:10px}
+.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3}
+
+/* footer */
+footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.footer-logo{height:64px;width:auto;display:block}
+
+@media(max-width:600px){
+  main{padding:60px 20px 80px}
+  .tpl-box{padding:20px}
+  .tpl-head{flex-direction:column;align-items:flex-start;gap:10px}
+  .ba-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-purple" style="width:600px;height:600px;top:-160px;right:-160px;opacity:.75"></div>
+<div class="orb orb-teal" style="width:400px;height:400px;bottom:-120px;left:-140px;opacity:.6"></div>
+
+<main>
+
+  <a href="library.html" class="back-link">← Библиотека ресурсов</a>
+
+  <h1>Текст<br><span>без ИИ</span></h1>
+
+  <p class="desc">
+    AI пишет узнаваемо: «в современном мире», «не просто X, а Y», «стоит отметить». Читатель это чувствует и <em>перестаёт верить тексту</em>.<br>
+    Здесь — готовый промт. Вставляешь в любой AI, добавляешь свой текст, и он убирает эти следы. Смысл и твой стиль остаются.
+  </p>
+
+  <p class="section-label">Готовый промт — вставь в любой AI</p>
+
+  <div class="tpl-box">
+    <div class="tpl-head">
+      <span class="tpl-label">Копируется целиком</span>
+      <button class="tpl-copy" id="tpl-copy-btn" type="button">Скопировать промт</button>
+    </div>
+    <pre id="tpl-source"><b>Ты редактор, который убирает из текста следы нейросети.</b> Я дам текст — перепиши его так, чтобы он читался как живой человек. Сохрани смысл, факты и мой стиль. Не добавляй новых фактов и не выдумывай.
+
+<b>Убери эту лексику</b> (замени простым словом или выкинь):
+кроме того, в контексте, ключевой, подчёркивая, непреходящий, усиливать, способствуя, привлекать внимание, подчеркнуть, взаимодействие, тонкости, нюансы, ландшафт (в переносном смысле), знаковый, продемонстрировать, ценный, яркий, стоит отметить, важно подчеркнуть, необходимо отметить, следует обратить внимание, нельзя не упомянуть, поистине, по-настоящему, уникальный, неповторимый, данный (пиши «этот»), осуществлять (пиши «делать»), в рамках (убери), является / служит / выступает в роли (пиши «это» или «есть»), трансформационный, углубиться, многогранный, раскрыть потенциал, синергия, экосистема (в переносном смысле), путешествие (как метафора), гобелен, полотно (как метафора), демистифицировать, прорывной.
+
+<b>Убери эти конструкции:</b>
+— «не просто X, а Y», «не только X, но и Y», «дело не в X, дело в Y»
+— «не потому что X, а потому что Y» — самая частая, лови первой
+— «это не X — это Y», «это не X, это Y» (отрицание через тире или запятую)
+— «представляет собой», «выступает в роли», «олицетворяет» → пиши «это» или «есть»
+— деепричастные обороты для глубины: «символизируя…», «воплощая…», «отражая…»
+— размытые ссылки: «по мнению экспертов», «ряд специалистов считает»
+— раздувание значимости: «важный этап», «неоценимый вклад», «играет решающую роль»
+— рубленые фразы-афоризмы ради драмы: «Заметят. Всегда.»
+— «Надеюсь, это поможет», «Дайте знать», «Отличный вопрос!»
+— концовки «будущее многообещающе», «в заключение», «в конечном счёте»
+— открывашки «в современном быстро меняющемся мире», «давайте разберёмся», «давайте погрузимся»
+— искусственные крючки «но вот в чём подвох», «это лишь половина истории»
+— «важно учитывать, что», «вообще говоря», «стремится к» вместо прямого утверждения
+
+<b>Правила живого текста:</b>
+— чередуй короткие и длинные предложения, не руби всё в афоризмы
+— пиши с позицией и конкретикой: цифры, механика, примеры
+— тире только там, где нужно; без жирного на каждом слове; без эмодзи
+— кавычки «ёлочки»
+— не группируй всё по три
+— немного несовершенства допустимо: живая речь важнее гладкой структуры
+
+Верни только переписанный текст, без пояснений.
+
+Текст:
+<span class="tpl-ph">[вставь сюда свой текст]</span></pre>
+  </div>
+
+  <div class="note">
+    <p>Работает в ChatGPT, Claude, Gemini — где угодно. Скопируй промт, вставь в чат, добавь свой текст в конце. А чтобы AI чистил каждый текст сам — вставь этот список в поле <code>Instructions for Claude</code> или в инструкцию проекта (см. шаблон «О себе»).</p>
+  </div>
+
+  <hr class="divider">
+
+  <p class="section-label">Самые частые маркеры — по ним ловят первым делом</p>
+  <div class="chips">
+    <span class="chip">не просто X, а Y</span>
+    <span class="chip">не потому что X, а Y</span>
+    <span class="chip">это не X — это Y</span>
+    <span class="chip">в современном мире</span>
+    <span class="chip">стоит отметить</span>
+    <span class="chip">важно подчеркнуть</span>
+    <span class="chip">является</span>
+    <span class="chip">данный</span>
+    <span class="chip">ключевой</span>
+    <span class="chip">раскрыть потенциал</span>
+    <span class="chip">давайте разберёмся</span>
+    <span class="chip">Заметят. Всегда.</span>
+    <span class="chip">надеюсь, это поможет</span>
+    <span class="chip">в заключение</span>
+  </div>
+
+  <p class="section-label">Как это выглядит на деле</p>
+  <div class="ba-grid">
+    <div class="ba-card">
+      <p class="ba-label">До — так пишет AI</p>
+      <p>В современном быстро меняющемся мире контент — это не просто текст, а ключевой инструмент влияния. Важно подчеркнуть, что грамотный подход способствует раскрытию потенциала бренда.</p>
+    </div>
+    <div class="ba-card after">
+      <p class="ba-label">После — живой текст</p>
+      <p>Контент сегодня решает, заметят тебя или нет. Хороший текст дотягивается до нужных людей и остаётся у них в голове. Плохой теряется в ленте за секунду.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="section-label">Почему это важно</p>
+  <div class="body">
+    <p>Аудитория научилась узнавать AI-текст. Как только человек его чувствует, включается недоверие — «опять сгенерили, читать не буду». Особенно там, где важна личность: личный бренд, экспертный контент, продажи.</p>
+    <p>Промт не делает текст умнее. Он убирает шум, за которым не видно смысла, и возвращает голос живого человека. Дальше твоя задача — добавить конкретику: цифры, примеры, своё мнение.</p>
+  </div>
+
+  <!-- WIKKI.OCEAN CTA -->
+  <div class="cta-block">
+    <h3>Хочешь глубже?</h3>
+    <p>Промт чистит текст. Но лучший результат — когда AI изначально пишет твоим голосом, а не задним числом переделывает чужой. Это настраивается один раз.</p>
+    <p>В моём Telegram-канале показываю, как строю контент на AI без вот этого пластикового звучания — простыми словами, на реальных примерах.</p>
+    <a class="cta-btn" href="https://t.me/wikki_shark" target="_blank">
+      <span class="cta-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.94 4.36c.26-1.1-.83-1.98-1.86-1.55L2.4 10.28c-1.12.47-1.1 2.06.03 2.5l4.55 1.77 1.85 5.98c.24.78 1.24 1 1.8.4l2.5-2.65 4.62 3.42c.83.61 2.02.16 2.24-.85l3.95-16.5zM8.63 13.3l9.7-6.2c.3-.2.6.18.34.42l-8 7.4c-.3.28-.5.66-.55 1.07l-.28 2.3-1.21-4.99z"></path></svg></span>
+      <span>Telegram-канал →</span>
+    </a>
+  </div>
+
+  <!-- MORE RESOURCES -->
+  <div class="more-section">
+    <p class="more-label">Ещё материалы</p>
+    <div class="more-grid">
+      <a class="more-card" href="claude-profile.html">
+        <p class="more-card-label">Шаблон</p>
+        <p class="more-card-title">Шаблон «О себе» — контекст о тебе для Claude</p>
+      </a>
+      <a class="more-card" href="claude-guide.html">
+        <p class="more-card-label">Руководство</p>
+        <p class="more-card-title">5 уровней Claude — от чата до системы</p>
+      </a>
+      <a class="more-card" href="library.html">
+        <p class="more-card-label">Библиотека</p>
+        <p class="more-card-title">Все материалы в одном месте</p>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <img src="wikki-logo-mark.png" alt="wikki.ocean" class="footer-logo">
+</footer>
+
+<script>
+(function(){
+  var copyBtn=document.getElementById('tpl-copy-btn');
+  var tplSource=document.getElementById('tpl-source');
+  copyBtn.addEventListener('click',function(){
+    var text=tplSource.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      copyBtn.textContent='Скопировано';
+      copyBtn.classList.add('copied');
+      setTimeout(function(){
+        copyBtn.textContent='Скопировать промт';
+        copyBtn.classList.remove('copied');
+      },2000);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
