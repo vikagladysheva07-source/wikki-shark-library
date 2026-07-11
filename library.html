@@ -62,7 +62,8 @@ nav{
 /* ── HERO ── */
 .hero{padding:100px 40px 72px;max-width:720px;margin:0 auto;text-align:center}
 .hero-pill{display:inline-block;font-size:11px;font-weight:600;color:var(--purple-br);letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(155,111,232,.35);border-radius:100px;padding:7px 16px;margin-bottom:28px}
-h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.15;letter-spacing:-.01em;margin-bottom:20px;text-transform:uppercase;background:linear-gradient(135deg,var(--ivory) 0%,var(--purple-br) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+@keyframes grad-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.15;letter-spacing:-.01em;margin-bottom:20px;text-transform:uppercase;background:linear-gradient(135deg,#FFFFFF 0%,#E8DFFF 25%,#C4A4FF 50%,#9B6FE8 75%,#5B2FBE 100%);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:grad-shift 6s ease-in-out infinite}
 .hero-desc{font-size:17px;color:var(--id);line-height:1.65;max-width:480px;margin:0 auto}
 .hero-desc em{font-style:normal;color:var(--ivory);font-weight:600}
 
