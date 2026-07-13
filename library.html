@@ -110,6 +110,10 @@ h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.15;letter-spacin
 .cta-btn:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 2px 6px rgba(0,0,0,.25),0 18px 34px -10px rgba(155,111,232,.78),inset 0 1px 0 rgba(255,255,255,.38)}
 .cta-btn:active{transform:translateY(0);filter:brightness(.97);box-shadow:0 1px 2px rgba(0,0,0,.3),0 4px 12px -6px rgba(155,111,232,.5),inset 0 1px 0 rgba(255,255,255,.2)}
 .cta-btn:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
+.cta-btn-ghost{display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.08);border:1px solid rgba(155,111,232,.35);padding:14px 26px;border-radius:100px;cursor:pointer;font-family:var(--font);transition:background .2s ease,border-color .2s ease,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.cta-btn-ghost:hover{background:rgba(155,111,232,.16);border-color:rgba(155,111,232,.6);transform:translateY(-2px);box-shadow:0 10px 24px -12px rgba(155,111,232,.5)}
+.cta-btn-ghost:active{transform:translateY(0);background:rgba(155,111,232,.12)}
+.cta-btn-ghost:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
 
 /* ── MODAL ── */
 body.wo-modal-lock{overflow:hidden}
@@ -300,7 +304,7 @@ footer span{font-size:12px;color:var(--idd)}
     <h3>Индивидуальный план по AI и маркетингу под твою ситуацию</h3>
     <p>Материалы в библиотеке общие — для всех одинаковые. Твоя ситуация конкретная: свой бизнес, своя аудитория, свои ограничения.</p>
     <p>Запишись на разбор — расскажи, что происходит сейчас. Отвечу лично и предложу план под твою задачу.</p>
-    <button class="cta-btn" type="button" id="wo-open-btn">записаться на разбор →</button>
+    <button class="cta-btn-ghost" type="button" id="wo-open-btn">Записаться на разбор</button>
   </div>
 </div>
 

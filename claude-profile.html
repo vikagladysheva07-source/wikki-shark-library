@@ -117,6 +117,11 @@ h1 span{color:var(--purple-br)}
 .cta-btn-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(5,5,8,.16);flex-shrink:0;transition:background .2s ease}
 .cta-btn:hover .cta-btn-icon{background:rgba(5,5,8,.22)}
 .cta-btn svg{width:17px;height:17px;flex-shrink:0}
+.cta-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cta-btn-ghost{display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.08);border:1px solid rgba(155,111,232,.35);padding:14px 26px;border-radius:100px;cursor:pointer;font-family:var(--font);transition:background .2s ease,border-color .2s ease,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.cta-btn-ghost:hover{background:rgba(155,111,232,.16);border-color:rgba(155,111,232,.6);transform:translateY(-2px);box-shadow:0 10px 24px -12px rgba(155,111,232,.5)}
+.cta-btn-ghost:active{transform:translateY(0);background:rgba(155,111,232,.12)}
+.cta-btn-ghost:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
 
 /* modal */
 body.wo-modal-lock{overflow:hidden}
@@ -345,11 +350,14 @@ footer span{font-size:12px;color:var(--idd)}
   <div class="cta-block">
     <h3>Хочешь глубже?</h3>
     <p>Настроить профиль — первый шаг. Но AI умеет гораздо больше, чем помнить, кто ты: вести проекты, автоматизировать рутину, заменять целые отделы.</p>
-    <p>В моём Telegram-канале показываю, как это работает на практике — простыми словами, на реальных примерах.</p>
-    <a class="cta-btn" href="https://t.me/wikki_shark" target="_blank">
-      <span class="cta-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.94 4.36c.26-1.1-.83-1.98-1.86-1.55L2.4 10.28c-1.12.47-1.1 2.06.03 2.5l4.55 1.77 1.85 5.98c.24.78 1.24 1 1.8.4l2.5-2.65 4.62 3.42c.83.61 2.02.16 2.24-.85l3.95-16.5zM8.63 13.3l9.7-6.2c.3-.2.6.18.34.42l-8 7.4c-.3.28-.5.66-.55 1.07l-.28 2.3-1.21-4.99z"></path></svg></span>
-      <span>Telegram-канал →</span>
-    </a>
+    <p>Хочешь такую систему под себя — запишись на разбор, посмотрю твою ситуацию и скажу, с чего начать. А в Telegram-канале показываю, как это работает на практике.</p>
+    <div class="cta-actions">
+      <a class="cta-btn" href="https://t.me/wikki_shark" target="_blank">
+        <span class="cta-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.94 4.36c.26-1.1-.83-1.98-1.86-1.55L2.4 10.28c-1.12.47-1.1 2.06.03 2.5l4.55 1.77 1.85 5.98c.24.78 1.24 1 1.8.4l2.5-2.65 4.62 3.42c.83.61 2.02.16 2.24-.85l3.95-16.5zM8.63 13.3l9.7-6.2c.3-.2.6.18.34.42l-8 7.4c-.3.28-.5.66-.55 1.07l-.28 2.3-1.21-4.99z"></path></svg></span>
+        <span>Telegram-канал →</span>
+      </a>
+      <button class="cta-btn-ghost" type="button" id="wo-open-btn">Записаться на разбор</button>
+    </div>
   </div>
 
   <!-- WIKKI.OCEAN MODAL -->
@@ -427,7 +435,10 @@ footer span{font-size:12px;color:var(--idd)}
 (function(){
   var overlay=document.getElementById('wo-overlay');
   var closeBtn=document.getElementById('wo-close-btn');
+  var openBtn=document.getElementById('wo-open-btn');
+  function openModal(){overlay.classList.add('open');document.body.classList.add('wo-modal-lock');}
   function closeModal(){overlay.classList.remove('open');document.body.classList.remove('wo-modal-lock');}
+  if(openBtn)openBtn.addEventListener('click',openModal);
   closeBtn.addEventListener('click',closeModal);
   overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closeModal();});
