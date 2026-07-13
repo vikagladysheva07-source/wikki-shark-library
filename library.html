@@ -71,7 +71,7 @@ h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.15;letter-spacin
 .sections{max-width:720px;margin:0 auto;padding:0 40px}
 .res-section{padding:56px 0;position:relative}
 .res-section:not(:first-child)::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent)}
-.res-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:14px}
+.res-label{display:inline-flex;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--purple-br);background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.28);border-radius:100px;padding:6px 13px;margin-bottom:16px}
 .res-head h2{font-size:clamp(20px,2.6vw,24px);font-weight:700;letter-spacing:-.01em;margin-bottom:10px;text-transform:uppercase}
 .res-head p{font-size:14px;color:var(--id2);line-height:1.68;max-width:520px}
 
@@ -216,10 +216,12 @@ footer span{font-size:12px;color:var(--idd)}
 <!-- SECTIONS -->
 <div class="sections">
 
-  <!-- BLOCK 01 — AI -->
-  <div class="res-section" id="block-ai">
+  <!-- ШАГ 1 — ДОСТУП -->
+  <div class="res-section" id="block-start">
     <div class="res-head">
-      <div class="res-label">ai</div>
+      <div class="res-label">шаг 1</div>
+      <h2>Заходи в Claude</h2>
+      <p>Ещё нет аккаунта или не проходит оплата — начни отсюда.</p>
     </div>
 
     <div class="res-grid">
@@ -236,21 +238,18 @@ footer span{font-size:12px;color:var(--idd)}
         </div>
         <p class="res-meta">Гайд · доступ, аккаунт, оплата</p>
       </a>
+    </div>
+  </div>
 
-      <a href="claude-guide.html" class="res-item">
-        <div class="res-item-top">
-          <div class="res-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"></path></svg>
-          </div>
-          <svg class="res-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </div>
-        <div class="res-body">
-          <span class="res-title">5 уровней Claude</span>
-          <p class="res-desc">Конкретные шаги на каждом уровне — от первого запроса до системы, которая работает без тебя.</p>
-        </div>
-        <p class="res-meta">Руководство · все 5 уровней</p>
-      </a>
+  <!-- ШАГ 2 — НАСТРОЙКА -->
+  <div class="res-section" id="block-setup">
+    <div class="res-head">
+      <div class="res-label">шаг 2</div>
+      <h2>Настрой под себя</h2>
+      <p>Аккаунт есть — дай Claude контекст о тебе и почисти его от узнаваемых оборотов нейросети.</p>
+    </div>
 
+    <div class="res-grid">
       <a href="claude-profile.html" class="res-item">
         <div class="res-item-top">
           <div class="res-icon">
@@ -277,6 +276,31 @@ footer span{font-size:12px;color:var(--idd)}
           <p class="res-desc">Готовый промт, который убирает из текста узнаваемые конструкции нейросети. Вставляешь в любой AI.</p>
         </div>
         <p class="res-meta">Промт · гуманизация текста</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- ШАГ 3 — УГЛУБЛЕНИЕ -->
+  <div class="res-section" id="block-grow">
+    <div class="res-head">
+      <div class="res-label">шаг 3</div>
+      <h2>Иди глубже</h2>
+      <p>От разового чата до системы, которая работает без тебя.</p>
+    </div>
+
+    <div class="res-grid">
+      <a href="claude-guide.html" class="res-item">
+        <div class="res-item-top">
+          <div class="res-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"></path></svg>
+          </div>
+          <svg class="res-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+        <div class="res-body">
+          <span class="res-title">5 уровней Claude</span>
+          <p class="res-desc">Конкретные шаги на каждом уровне — от первого запроса до системы, которая работает без тебя.</p>
+        </div>
+        <p class="res-meta">Руководство · все 5 уровней</p>
       </a>
 
       <a href="claude-how-to.html" class="res-item">
