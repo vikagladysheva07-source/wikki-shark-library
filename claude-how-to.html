@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как пользоваться Claude — конспект курса Anthropic — wikki.ocean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#050508;
+  --surface:#0D1A26;
+  --ivory:#F2EDE2;
+  --id:rgba(255,255,255,.87);
+  --id2:rgba(255,255,255,.6);
+  --idd:rgba(255,255,255,.38);
+  --line:rgba(242,237,226,.10);
+  --purple:#9B6FE8;--purple-br:#C4A4FF;
+  --teal:#00C4D4;--teal-br:#5EE0EE;
+  --font:'DM Sans',system-ui,-apple-system,sans-serif;
+  --mono:'SFMono-Regular',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);color:var(--ivory);-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-color:var(--black);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:120px 120px;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── ORBS ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:-1}
+.orb-purple{background:radial-gradient(circle,rgba(155,111,232,.26) 0%,rgba(91,47,190,.09) 70%)}
+.orb-teal{background:radial-gradient(circle,rgba(0,196,212,.20) 0%,rgba(0,196,212,.05) 70%)}
+
+/* back link */
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--idd);margin-bottom:32px;transition:color .2s}
+.back-link:hover{color:var(--ivory)}
+
+/* main */
+main{max-width:680px;margin:0 auto;padding:100px 32px 120px}
+
+/* h1 shimmer */
+@keyframes grad-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+h1{font-size:clamp(40px,6vw,66px);font-weight:900;line-height:.92;letter-spacing:-.04em;margin-bottom:24px;text-transform:uppercase;background:linear-gradient(135deg,#FFFFFF 0%,#E8DFFF 25%,#C4A4FF 50%,#9B6FE8 75%,#5B2FBE 100%);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:grad-shift 6s ease-in-out infinite}
+
+/* desc */
+.desc{font-size:16px;color:var(--id);line-height:1.7;max-width:540px;margin-bottom:28px}
+.desc em{font-style:normal;color:var(--teal-br)}
+
+/* source note */
+.src{padding:18px 22px;border:1px solid var(--line);border-radius:12px;background:rgba(5,5,9,.4);margin-bottom:56px;font-size:13px;color:var(--id2);line-height:1.65}
+.src strong{color:var(--ivory)}
+.src a{color:var(--purple-br);text-decoration:underline;text-underline-offset:2px}
+.src a:hover{color:var(--teal-br)}
+
+/* part header */
+.part{display:flex;align-items:baseline;gap:14px;margin:0 0 8px}
+.part-num{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--purple-br)}
+.part h2{font-size:clamp(22px,3.4vw,28px);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.part-sub{font-size:14px;color:var(--id2);line-height:1.6;max-width:560px;margin:0 0 28px}
+.part-wrap{margin-bottom:72px}
+
+/* 2-col cards */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px}
+.info-card{padding:22px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.4);box-shadow:inset 0 1px 0 rgba(242,237,226,.04);transition:border-color .3s ease,transform .3s ease}
+.info-card:hover{border-color:rgba(155,111,232,.25);transform:translateY(-2px)}
+.ic-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(155,111,232,.22),rgba(0,196,212,.12));color:var(--purple-br);font-weight:800;font-size:15px;margin-bottom:14px}
+.info-card h4{font-size:16px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+.info-card p{font-size:13.5px;color:var(--id2);line-height:1.6}
+
+/* loop callout */
+.loop{margin-top:16px;padding:20px 24px;border-left:2px solid var(--purple);background:linear-gradient(90deg,rgba(155,111,232,.08),rgba(155,111,232,.02));border-radius:0 4px 4px 0;box-shadow:0 16px 32px -24px rgba(0,0,0,.55)}
+.loop p{font-size:14px;color:var(--id);line-height:1.65}
+.loop strong{color:var(--purple-br)}
+.loop .flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.loop .flow span{font-size:12.5px;font-family:var(--mono);color:var(--id);background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.25);border-radius:100px;padding:6px 13px}
+
+/* table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.tbl{width:100%;border-collapse:collapse;min-width:520px}
+.tbl th{font-size:11px;color:var(--idd);letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:14px 18px;border-bottom:1px solid var(--line)}
+.tbl td{font-size:13.5px;color:var(--id2);padding:16px 18px;border-bottom:1px solid var(--line);line-height:1.55;vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td:first-child{color:var(--purple-br);font-weight:800;white-space:nowrap}
+.tbl td strong{color:var(--ivory);font-weight:600}
+.tbl-note{font-size:13px;color:var(--id2);line-height:1.6;margin-top:16px;padding-left:14px;border-left:2px solid rgba(0,196,212,.3)}
+
+/* tier + chapters */
+.tier{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-br);margin:28px 0 4px}
+.ch-list{display:flex;flex-direction:column}
+.ch{display:flex;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.ch:last-child{border-bottom:1px solid var(--line)}
+.ch-n{font-size:13px;font-weight:800;color:var(--purple-br);flex-shrink:0;width:20px;padding-top:1px;font-variant-numeric:tabular-nums}
+.ch-body h5{font-size:15px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
+.ch-body p{font-size:13.5px;color:var(--id2);line-height:1.6}
+.ch-body p .why{color:var(--id)}
+
+/* CTA */
+.cta-block{margin-top:24px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(0,196,212,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
+.cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:uppercase}
+.cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
+.cta-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cta-btn{display:inline-flex;align-items:center;gap:13px;font-size:14px;font-weight:700;color:var(--black);background:linear-gradient(180deg,var(--purple-br),var(--purple));padding:8px 28px 8px 8px;border-radius:100px;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,filter .2s ease;border:none;cursor:pointer;font-family:var(--font);box-shadow:0 1px 2px rgba(0,0,0,.25),0 10px 24px -10px rgba(155,111,232,.6),inset 0 1px 0 rgba(255,255,255,.3)}
+.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 2px 6px rgba(0,0,0,.25),0 18px 34px -10px rgba(155,111,232,.78),inset 0 1px 0 rgba(255,255,255,.38)}
+.cta-btn:active{transform:translateY(0);filter:brightness(.97)}
+.cta-btn:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
+.cta-btn-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(5,5,8,.16);flex-shrink:0;transition:background .2s ease}
+.cta-btn:hover .cta-btn-icon{background:rgba(5,5,8,.22)}
+.cta-btn svg{width:17px;height:17px;flex-shrink:0}
+.cta-btn-ghost{display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.08);border:1px solid rgba(155,111,232,.35);padding:14px 26px;border-radius:100px;cursor:pointer;font-family:var(--font);transition:background .2s ease,border-color .2s ease,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.cta-btn-ghost:hover{background:rgba(155,111,232,.16);border-color:rgba(155,111,232,.6);transform:translateY(-2px);box-shadow:0 10px 24px -12px rgba(155,111,232,.5)}
+.cta-btn-ghost:active{transform:translateY(0);background:rgba(155,111,232,.12)}
+.cta-btn-ghost:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
+
+/* modal */
+body.wo-modal-lock{overflow:hidden}
+.wo-modal-overlay{position:fixed;inset:0;background:rgba(3,10,20,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;opacity:0;visibility:hidden;transition:opacity .3s ease}
+.wo-modal-overlay.open{opacity:1;visibility:visible}
+.wo-modal{position:relative;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#0F1D2B,#040B15);border:1px solid rgba(196,164,255,.16);border-radius:20px;padding:44px 40px 40px;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(155,111,232,.05);transform:translateY(18px) scale(.97);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.wo-modal-overlay.open .wo-modal{transform:translateY(0) scale(1)}
+.wo-modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(242,237,226,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--id);font-size:15px;line-height:1;transition:border-color .2s,color .2s,background .2s,transform .2s cubic-bezier(.2,.8,.2,1)}
+.wo-modal-close:hover{border-color:rgba(155,111,232,.4);color:var(--ivory);background:rgba(155,111,232,.06);transform:rotate(90deg)}
+.wo-modal-close:active{transform:rotate(90deg) scale(.9)}
+.wo-modal-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:12px}
+.wo-modal h3{font-size:clamp(19px,2.4vw,23px);font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-bottom:10px;text-transform:uppercase}
+.wo-modal-desc{font-size:13.5px;color:var(--id);line-height:1.62;max-width:420px;margin-bottom:28px}
+@media(max-width:600px){.wo-modal{padding:36px 24px 32px;border-radius:16px}}
+.wo-form{max-width:480px}
+.wo-field{margin-bottom:14px}
+.wo-field>label{display:block;font-size:11px;color:var(--idd);letter-spacing:.06em;margin-bottom:8px}
+.wo-input,.wo-textarea{width:100%;padding:14px 16px;background:rgba(242,237,226,.03);border:1px solid var(--line);border-radius:10px;color:var(--ivory);font-family:var(--font);font-size:14px;transition:border-color .2s,background .2s}
+.wo-input:focus,.wo-textarea:focus{outline:none;border-color:var(--purple);background:rgba(155,111,232,.05)}
+.wo-input::placeholder,.wo-textarea::placeholder{color:var(--idd)}
+.wo-textarea{resize:vertical;min-height:88px;line-height:1.5}
+.wo-checks{display:flex;flex-direction:column;gap:8px}
+.wo-check{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s}
+.wo-check:hover{border-color:rgba(155,111,232,.3)}
+.wo-check:has(input:checked){border-color:var(--purple-br);background:rgba(155,111,232,.06)}
+.wo-check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--line);border-radius:5px;background:rgba(242,237,226,.03);flex-shrink:0;cursor:pointer;position:relative;transition:border-color .2s,background .2s}
+.wo-check input:checked{background:var(--purple-br);border-color:var(--purple-br)}
+.wo-check input:checked::after{content:'';position:absolute;left:5px;top:1px;width:5px;height:9px;border:solid var(--black);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.wo-check span{font-size:13.5px;color:var(--id2)}
+.wo-check:has(input:checked) span{color:var(--ivory)}
+.wo-error{font-size:12px;color:var(--teal-br);margin-top:8px;display:none}
+.wo-error.show{display:block}
+.wo-submit{width:100%;padding:15px;margin-top:6px;font-size:14px;font-weight:700;color:var(--black);background:linear-gradient(180deg,var(--purple-br),var(--purple));border:none;border-radius:100px;cursor:pointer;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,filter .2s ease;font-family:var(--font);box-shadow:0 1px 2px rgba(0,0,0,.25),0 8px 20px -10px rgba(155,111,232,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+.wo-submit:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.wo-submit:active{transform:translateY(0);filter:brightness(.97)}
+.wo-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;filter:none}
+.wo-success{display:none;padding:32px 0 8px}
+.wo-success.show{display:block}
+.wo-success p{font-size:15px;color:var(--ivory);line-height:1.6}
+.wo-success span{font-size:13px;color:var(--id2)}
+
+/* more resources */
+.more-section{margin-top:96px}
+.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;margin-bottom:32px}
+.more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.more-card{display:block;padding:24px;border:1px solid var(--line);border-radius:8px;transition:border-color .35s cubic-bezier(.16,1,.3,1),background .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
+.more-card:hover{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.04);transform:translateY(-3px);box-shadow:0 24px 48px -24px rgba(0,0,0,.6),0 0 0 1px rgba(155,111,232,.08)}
+.more-card:active{transform:translateY(-1px);transition-duration:.1s}
+.more-card:focus-visible{outline:2px solid var(--purple-br);outline-offset:2px}
+.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;margin-bottom:10px}
+.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3}
+
+/* footer */
+footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.footer-logo{height:64px;width:auto;display:block}
+
+@media(max-width:600px){
+  main{padding:60px 20px 80px}
+  .grid2{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-purple" style="width:600px;height:600px;top:-160px;right:-160px;opacity:.75"></div>
+<div class="orb orb-teal" style="width:400px;height:400px;bottom:-120px;left:-140px;opacity:.6"></div>
+
+<main>
+
+  <a href="library.html" class="back-link">← Библиотека ресурсов</a>
+
+  <h1>Claude<br><span>на максимум</span></h1>
+
+  <p class="desc">
+    Официальный подход Anthropic к работе с Claude — <em>без домыслов и инфобизнеса</em>. Курс AI Fluency и интерактивный туториал по промпт-инжинирингу, собранные в один конспект.
+  </p>
+
+  <div class="src">
+    <strong>Источники.</strong> Это пересказ официальных материалов Anthropic своими словами — курс <a href="https://www.anthropic.com/learn/claude-for-you" target="_blank" rel="noopener">AI Fluency: Framework &amp; Foundations</a> и <a href="https://github.com/anthropics/prompt-eng-interactive-tutorial" target="_blank" rel="noopener">Prompt Engineering Interactive Tutorial</a>. За точными формулировками, актуальными версиями моделей и практикой — по ссылкам.
+  </div>
+
+  <!-- ЧАСТЬ 1 -->
+  <div class="part-wrap">
+    <div class="part"><span class="part-num">ЧАСТЬ 1</span><h2>AI Fluency — четыре навыка</h2></div>
+    <p class="part-sub">Anthropic вместе с университетскими экспертами собрали курс о том, как работать с AI продуктивно, этично и безопасно. В основе — четыре навыка. Технический бэкграунд не нужен.</p>
+
+    <div class="grid2">
+      <div class="info-card">
+        <span class="ic-badge">D</span>
+        <h4>Делегирование</h4>
+        <p>Решить, что вообще стоит поручать AI, а что оставить себе. Самый недооценённый навык: часть задач AI сделает быстрее и лучше, часть — хуже, а часть нельзя отдавать вовсе — из-за ответственности, приватности данных или необходимости своего суждения.</p>
+      </div>
+      <div class="info-card">
+        <span class="ic-badge">D</span>
+        <h4>Описание</h4>
+        <p>Точно сформулировать задачу: контекст, цель, ограничения, желаемый формат и критерии успеха. У Anthropic это отдельная дисциплина, а не «напиши промпт наугад».</p>
+      </div>
+      <div class="info-card">
+        <span class="ic-badge">D</span>
+        <h4>Различение</h4>
+        <p>Критически оценить ответ. Это не разовая проверка, а цикл: описал → получил → оценил → уточнил → получил лучше. Хорошая работа с Claude идёт итерациями.</p>
+      </div>
+      <div class="info-card">
+        <span class="ic-badge">D</span>
+        <h4>Добросовестность</h4>
+        <p>Ответственность за результат остаётся на человеке. AI — инструмент, а проверка фактов, качество и последствия использования — на тебе.</p>
+      </div>
+    </div>
+
+    <div class="loop">
+      <p><strong>Это цикл, а не список раз-два-три.</strong> Делегирование решает, что отдать AI. Описание формулирует задачу. Различение оценивает ответ и запускает уточнение. Добросовестность отвечает за финал перед тем, как результат пойдёт в дело.</p>
+      <div class="flow">
+        <span>Делегируй</span>
+        <span>Опиши</span>
+        <span>Оцени</span>
+        <span>Уточни</span>
+        <span>Отвечай за результат</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЧАСТЬ 2 -->
+  <div class="part-wrap">
+    <div class="part"><span class="part-num">ЧАСТЬ 2</span><h2>Модели Claude</h2></div>
+    <p class="part-sub">У Claude несколько моделей под разные задачи. Брать самую мощную для всего подряд — трата денег и времени там, где справится модель попроще.</p>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <tr><th>Модель</th><th>Что это</th><th>Когда брать</th></tr>
+        <tr><td>Opus</td><td><strong>Самая умная и способная</strong></td><td>Сложные задачи: стратегия, многошаговый анализ, творческая работа высокого уровня</td></tr>
+        <tr><td>Sonnet</td><td><strong>Рабочая лошадка</strong> — умная и быстрая</td><td>Баланс скорости и качества, основная модель на каждый день</td></tr>
+        <tr><td>Haiku</td><td><strong>Самая быстрая</strong> для лёгких задач</td><td>Простые, массовые, быстрые задачи, где важна скорость, а не глубина</td></tr>
+      </table>
+    </div>
+    <p class="tbl-note">У каждой модели свои оптимальные приёмы промптинга — универсального одного подхода нет.</p>
+  </div>
+
+  <!-- ЧАСТЬ 3 -->
+  <div class="part-wrap">
+    <div class="part"><span class="part-num">ЧАСТЬ 3</span><h2>Инструменты Claude</h2></div>
+    <p class="part-sub">Четыре инструмента, которые превращают чат в рабочую среду.</p>
+
+    <div class="grid2">
+      <div class="info-card">
+        <h4>Artifacts</h4>
+        <p>Результат — документ, код, визуализация — выносится в отдельное окно, где его можно дальше редактировать, версионировать и экспортировать. Здесь же можно собрать интерактивный прототип приложения без навыков программирования.</p>
+      </div>
+      <div class="info-card">
+        <h4>Projects</h4>
+        <p>Организация сложных задач с общим контекстом и командной работой. Проект хранит файлы, историю и фон задачи — не нужно каждый раз объяснять всё заново.</p>
+      </div>
+      <div class="info-card">
+        <h4>Skills</h4>
+        <p>Свои переиспользуемые наборы инструкций под повторяющийся тип задач. Настроила детальный алгоритм один раз — применяешь по запросу.</p>
+      </div>
+      <div class="info-card">
+        <h4>Интеграции</h4>
+        <p>Подключение внешних сервисов напрямую — GitHub, Google Docs, аналитика. Claude берёт актуальные данные прямо из твоих рабочих инструментов, без ручного копирования в чат.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЧАСТЬ 4 -->
+  <div class="part-wrap">
+    <div class="part"><span class="part-num">ЧАСТЬ 4</span><h2>Промпт-инжиниринг</h2></div>
+    <p class="part-sub">Официальный туториал Anthropic — 9 глав по уровням сложности. Каждый приём: что делать и зачем.</p>
+
+    <p class="tier">Базовый уровень</p>
+    <div class="ch-list">
+      <div class="ch"><span class="ch-n">1</span><div class="ch-body"><h5>Структура промпта</h5><p>Собирать запрос из базовых элементов в логичном порядке. <span class="why">База для стабильных ответов — без неё остальные приёмы работают хуже.</span></p></div></div>
+      <div class="ch"><span class="ch-n">2</span><div class="ch-body"><h5>Ясность и прямота</h5><p>Писать инструкции точно, без двусмысленности, проговаривать требования прямо. <span class="why">Неясность — главная причина, по которой Claude «не понимает» задачу.</span></p></div></div>
+      <div class="ch"><span class="ch-n">3</span><div class="ch-body"><h5>Назначение роли</h5><p>Задать Claude профессию или контекст: «действуй как аналитик данных». <span class="why">Роль меняет стиль, тон и глубину экспертизы ответа.</span></p></div></div>
+    </div>
+
+    <p class="tier">Средний уровень</p>
+    <div class="ch-list">
+      <div class="ch"><span class="ch-n">4</span><div class="ch-body"><h5>Данные отдельно от инструкций</h5><p>Разграничивать команду и материал для обработки — через разделители или XML-теги. <span class="why">Иначе Claude может принять кусок данных за инструкцию.</span></p></div></div>
+      <div class="ch"><span class="ch-n">5</span><div class="ch-body"><h5>Формат ответа</h5><p>Прямо задавать формат вывода (JSON, таблица, список) и при желании задавать первые слова ответа. <span class="why">Экономит время на постобработку.</span></p></div></div>
+      <div class="ch"><span class="ch-n">6</span><div class="ch-body"><h5>Пошаговое рассуждение</h5><p>Просить Claude показать ход мысли перед финальным ответом. <span class="why">Заметно повышает точность на сложных и многошаговых задачах.</span></p></div></div>
+      <div class="ch"><span class="ch-n">7</span><div class="ch-body"><h5>Примеры (few-shot)</h5><p>Давать образцы пар «вход → выход». <span class="why">Примеры улучшают понимание задачи сильнее, чем длинные объяснения.</span></p></div></div>
+    </div>
+
+    <p class="tier">Продвинутый уровень</p>
+    <div class="ch-list">
+      <div class="ch"><span class="ch-n">8</span><div class="ch-body"><h5>Борьба с галлюцинациями</h5><p>Ограничивать ответ данными, просить ссылки, разрешать Claude отвечать «не знаю». <span class="why">Критично там, где точность обязательна.</span></p></div></div>
+      <div class="ch"><span class="ch-n">9</span><div class="ch-body"><h5>Сложные промпты под реальные задачи</h5><p>Комбинировать несколько приёмов в одном запросе. <span class="why">Разобраны кейсы: чат-боты, юридические и финансовые услуги, задачи по коду.</span></p></div></div>
+    </div>
+
+    <p class="tier">За пределами стандартного промптинга</p>
+    <div class="ch-list">
+      <div class="ch"><span class="ch-n">+</span><div class="ch-body"><h5>Цепочки промптов</h5><p>Разбить сложную задачу на последовательность запросов, где вывод одного — вход для следующего.</p></div></div>
+      <div class="ch"><span class="ch-n">+</span><div class="ch-body"><h5>Использование инструментов</h5><p>Claude обращается к внешним инструментам и API прямо по ходу задачи, а не работает только с текстом в диалоге.</p></div></div>
+      <div class="ch"><span class="ch-n">+</span><div class="ch-body"><h5>Поиск и внешние данные</h5><p>Подключение систем поиска к промптингу — для ответов, обогащённых актуальными знаниями.</p></div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h3>От теории к системе</h3>
+    <p>Знать приёмы — половина дела. Вторая половина — собрать из них рабочую систему под свои задачи: проекты, скиллы, автоматизации. Это то, что я строю в своих проектах каждый день.</p>
+    <p>Запишись на разбор — посмотрю твою ситуацию и скажу, с чего начать. А в Telegram-канале делюсь тем, что работает на практике.</p>
+    <div class="cta-actions">
+      <a class="cta-btn" href="https://t.me/wikki_shark" target="_blank">
+        <span class="cta-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.94 4.36c.26-1.1-.83-1.98-1.86-1.55L2.4 10.28c-1.12.47-1.1 2.06.03 2.5l4.55 1.77 1.85 5.98c.24.78 1.24 1 1.8.4l2.5-2.65 4.62 3.42c.83.61 2.02.16 2.24-.85l3.95-16.5zM8.63 13.3l9.7-6.2c.3-.2.6.18.34.42l-8 7.4c-.3.28-.5.66-.55 1.07l-.28 2.3-1.21-4.99z"></path></svg></span>
+        <span>Telegram-канал →</span>
+      </a>
+      <button class="cta-btn-ghost" type="button" id="wo-open-btn">Записаться на разбор</button>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="wo-modal-overlay" id="wo-overlay">
+    <div class="wo-modal" role="dialog" aria-modal="true" aria-labelledby="wo-modal-title">
+      <button class="wo-modal-close" id="wo-close-btn" type="button" aria-label="Закрыть">✕</button>
+      <div id="wo-form-wrap">
+        <p class="wo-modal-eyebrow">Заявка</p>
+        <h3 id="wo-modal-title">Заявка на разбор</h3>
+        <p class="wo-modal-desc">Опиши, что происходит сейчас, — отвечу лично и разберу именно твой случай.</p>
+        <form id="wo-form" class="wo-form" action="https://docs.google.com/forms/d/e/1FAIpQLSd-a5-CHpZNwLvAD1YZuwGQDNSIjNFQaMB5eFdwIvWj3OtCLg/formResponse" method="POST" target="wo-hidden-frame">
+          <div class="wo-field">
+            <label for="wo-name">Имя</label>
+            <input class="wo-input" type="text" id="wo-name" name="entry.1994539439" placeholder="Как к тебе обращаться" required>
+          </div>
+          <div class="wo-field">
+            <label for="wo-contact">Контакт для связи</label>
+            <input class="wo-input" type="text" id="wo-contact" name="entry.1074568097" placeholder="Telegram или номер" required>
+          </div>
+          <div class="wo-field">
+            <label>Что интересует</label>
+            <div class="wo-checks">
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Практикум &quot;Океан Влияния&quot;"><span>Практикум «Океан влияния»</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Контент-завод под ключ"><span>Контент-завод под ключ</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="AI-автоматизации"><span>AI-автоматизации</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Личная работа"><span>Личная работа</span></label>
+              <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Не определился(-ась)"><span>Ещё не определился(-ась)</span></label>
+            </div>
+            <p class="wo-error" id="wo-check-error">Выбери хотя бы один вариант</p>
+          </div>
+          <div class="wo-field">
+            <label for="wo-request">Какой запрос</label>
+            <textarea class="wo-textarea" id="wo-request" name="entry.1982844077" placeholder="Что сейчас происходит, что хочешь построить" required></textarea>
+          </div>
+          <button class="wo-submit" type="submit" id="wo-submit">Отправить заявку</button>
+        </form>
+      </div>
+      <div class="wo-success" id="wo-success">
+        <p>Заявка отправлена</p>
+        <span>Отвечу в течение 24 часов.</span>
+      </div>
+      <iframe name="wo-hidden-frame" style="display:none" title="wo-hidden-frame"></iframe>
+    </div>
+  </div>
+
+  <!-- MORE RESOURCES -->
+  <div class="more-section">
+    <p class="more-label">Ещё материалы</p>
+    <div class="more-grid">
+      <a class="more-card" href="claude-guide.html">
+        <p class="more-card-label">Руководство</p>
+        <p class="more-card-title">5 уровней Claude — от чата до системы</p>
+      </a>
+      <a class="more-card" href="claude-profile.html">
+        <p class="more-card-label">Шаблон</p>
+        <p class="more-card-title">Шаблон «О себе» — контекст о тебе для Claude</p>
+      </a>
+      <a class="more-card" href="library.html">
+        <p class="more-card-label">Библиотека</p>
+        <p class="more-card-title">Все материалы в одном месте</p>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <img src="wikki-logo-mark.png" alt="wikki.ocean" class="footer-logo">
+</footer>
+
+<script>
+(function(){
+  var overlay=document.getElementById('wo-overlay');
+  var closeBtn=document.getElementById('wo-close-btn');
+  var openBtn=document.getElementById('wo-open-btn');
+  function openModal(){overlay.classList.add('open');document.body.classList.add('wo-modal-lock');}
+  function closeModal(){overlay.classList.remove('open');document.body.classList.remove('wo-modal-lock');}
+  if(openBtn)openBtn.addEventListener('click',openModal);
+  closeBtn.addEventListener('click',closeModal);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closeModal();});
+
+  var form=document.getElementById('wo-form');
+  var formWrap=document.getElementById('wo-form-wrap');
+  var checkError=document.getElementById('wo-check-error');
+  var submitBtn=document.getElementById('wo-submit');
+  form.addEventListener('submit',function(e){
+    var checked=form.querySelectorAll('input[name="entry.1345489343"]:checked');
+    if(checked.length===0){e.preventDefault();checkError.classList.add('show');return;}
+    checkError.classList.remove('show');
+    submitBtn.disabled=true;submitBtn.textContent='Отправляю…';
+    setTimeout(function(){formWrap.style.display='none';document.getElementById('wo-success').classList.add('show');},700);
+  });
+})();
+</script>
+
+</body>
+</html>
