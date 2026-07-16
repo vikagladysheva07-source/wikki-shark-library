@@ -67,9 +67,34 @@ h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.15;letter-spacin
 .hero-desc{font-size:17px;color:var(--id);line-height:1.65;max-width:480px;margin:0 auto}
 .hero-desc em{font-style:normal;color:var(--ivory);font-weight:600}
 
+/* ── TOOLBAR (sticky nav + search + filters) ── */
+.lib-toolbar{position:sticky;top:0;z-index:40;max-width:760px;margin:0 auto;padding:14px 40px;background:rgba(5,5,8,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.toolbar-inner{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.toolbar-search{flex:1 1 200px;display:flex;align-items:center;gap:10px;padding:10px 16px;border:1px solid var(--line);border-radius:100px;background:rgba(242,237,226,.03);transition:border-color .2s,background .2s}
+.toolbar-search:focus-within{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.05)}
+.toolbar-search svg{width:15px;height:15px;color:var(--idd);flex-shrink:0}
+.toolbar-search input{flex:1;min-width:0;background:none;border:none;outline:none;color:var(--ivory);font-family:var(--font);font-size:13.5px}
+.toolbar-search input::placeholder{color:var(--idd)}
+.toolbar-filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter-chip{font-size:12px;font-weight:600;color:var(--id2);background:rgba(242,237,226,.03);border:1px solid var(--line);border-radius:100px;padding:8px 15px;cursor:pointer;font-family:var(--font);transition:all .2s;white-space:nowrap}
+.filter-chip:hover{border-color:rgba(242,237,226,.24);color:var(--ivory)}
+.filter-chip.active{color:var(--purple-br);background:rgba(155,111,232,.14);border-color:rgba(155,111,232,.5)}
+.filter-chip:focus-visible{outline:2px solid var(--purple-br);outline-offset:2px}
+.toolbar-steps{display:flex;gap:8px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
+.toolbar-steps::-webkit-scrollbar{display:none}
+.step-pill{display:flex;align-items:center;gap:8px;flex-shrink:0;font-size:12px;font-weight:600;color:var(--id2);padding:7px 15px 7px 7px;border-radius:100px;border:1px solid var(--line);background:rgba(242,237,226,.02);transition:all .25s cubic-bezier(.16,1,.3,1)}
+.step-pill span{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:rgba(242,237,226,.06);color:var(--idd);font-size:10.5px;font-weight:800;transition:all .25s}
+.step-pill:hover{color:var(--ivory);border-color:rgba(242,237,226,.24)}
+.step-pill.active{color:var(--ivory);border-color:rgba(155,111,232,.5);background:rgba(155,111,232,.1)}
+.step-pill.active span{background:var(--purple-br);color:var(--black)}
+.step-pill:focus-visible{outline:2px solid var(--purple-br);outline-offset:2px}
+
 /* ── SECTIONS ── */
 .sections{max-width:720px;margin:0 auto;padding:0 40px}
-.res-section{padding:56px 0;position:relative}
+.res-section{padding:56px 0;position:relative;scroll-margin-top:150px;transition:opacity .2s}
+.res-section-hidden{display:none}
+.no-results{display:none;text-align:center;padding:56px 0;color:var(--id2);font-size:14px}
+.no-results.show{display:block}
 .res-section:not(:first-child)::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent)}
 .res-label{display:inline-flex;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--purple-br);background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.28);border-radius:100px;padding:6px 13px;margin-bottom:16px}
 .res-head h2{font-size:clamp(20px,2.6vw,24px);font-weight:700;letter-spacing:-.01em;margin-bottom:10px;text-transform:uppercase}
@@ -173,8 +198,11 @@ footer span{font-size:12px;color:var(--idd)}
   nav{padding:16px 20px}
   .nav-links{display:none}
   .hero{padding:64px 20px 48px}
+  .lib-toolbar{padding:12px 20px}
+  .toolbar-filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .toolbar-filters::-webkit-scrollbar{display:none}
   .sections{padding:0 20px}
-  .res-section{padding:40px 0}
+  .res-section{padding:40px 0;scroll-margin-top:190px}
   .lib-cta{padding:0 20px 20px}
   .lib-cta-inner{padding:28px 22px}
   footer{padding:32px 20px}
@@ -213,6 +241,28 @@ footer span{font-size:12px;color:var(--idd)}
   <p class="hero-desc">От первого шага до <em>полной системы</em>.</p>
 </div>
 
+<!-- TOOLBAR: search + filters + step nav -->
+<div class="lib-toolbar" id="lib-toolbar">
+  <div class="toolbar-inner">
+    <div class="toolbar-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="lib-search" placeholder="Найти материал…" aria-label="Поиск по библиотеке">
+    </div>
+    <div class="toolbar-filters" id="toolbar-filters" role="group" aria-label="Фильтр по типу материала">
+      <button class="filter-chip active" type="button" data-filter="all">Все</button>
+      <button class="filter-chip" type="button" data-filter="guide">Гайды</button>
+      <button class="filter-chip" type="button" data-filter="template">Шаблоны</button>
+      <button class="filter-chip" type="button" data-filter="prompt">Промты</button>
+      <button class="filter-chip" type="button" data-filter="article">Статьи</button>
+    </div>
+  </div>
+  <div class="toolbar-steps">
+    <a href="#block-start" class="step-pill" data-step="1"><span>1</span>Заходи в Claude</a>
+    <a href="#block-setup" class="step-pill" data-step="2"><span>2</span>Настрой под себя</a>
+    <a href="#block-grow" class="step-pill" data-step="3"><span>3</span>Иди глубже</a>
+  </div>
+</div>
+
 <!-- SECTIONS -->
 <div class="sections">
 
@@ -225,7 +275,7 @@ footer span{font-size:12px;color:var(--idd)}
     </div>
 
     <div class="res-grid">
-      <a href="claude-registration.html" class="res-item">
+      <a href="claude-registration.html" class="res-item" data-type="guide">
         <div class="res-item-top">
           <div class="res-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="16" y1="11" x2="22" y2="11"></line></svg>
@@ -250,7 +300,7 @@ footer span{font-size:12px;color:var(--idd)}
     </div>
 
     <div class="res-grid">
-      <a href="claude-profile.html" class="res-item">
+      <a href="claude-profile.html" class="res-item" data-type="template">
         <div class="res-item-top">
           <div class="res-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -264,7 +314,7 @@ footer span{font-size:12px;color:var(--idd)}
         <p class="res-meta">Шаблон · личные настройки</p>
       </a>
 
-      <a href="claude-humanizer.html" class="res-item">
+      <a href="claude-humanizer.html" class="res-item" data-type="prompt">
         <div class="res-item-top">
           <div class="res-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -289,7 +339,7 @@ footer span{font-size:12px;color:var(--idd)}
     </div>
 
     <div class="res-grid">
-      <a href="claude-guide.html" class="res-item">
+      <a href="claude-guide.html" class="res-item" data-type="guide">
         <div class="res-item-top">
           <div class="res-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.4 5.7 21l2.3-7.2-6-4.6h7.6z"></path></svg>
@@ -303,7 +353,7 @@ footer span{font-size:12px;color:var(--idd)}
         <p class="res-meta">Руководство · все 5 уровней</p>
       </a>
 
-      <a href="claude-how-to.html" class="res-item">
+      <a href="claude-how-to.html" class="res-item" data-type="article">
         <div class="res-item-top">
           <div class="res-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
@@ -318,6 +368,8 @@ footer span{font-size:12px;color:var(--idd)}
       </a>
     </div>
   </div>
+
+  <p class="no-results" id="lib-no-results">Ничего не найдено. Попробуй другой запрос или сними фильтр.</p>
 
 </div>
 
@@ -384,6 +436,58 @@ footer span{font-size:12px;color:var(--idd)}
 </footer>
 
 <script>
+(function(){
+  var searchInput=document.getElementById('lib-search');
+  var chips=document.querySelectorAll('.filter-chip');
+  var sections=document.querySelectorAll('.res-section');
+  var noResults=document.getElementById('lib-no-results');
+  var stepPills=document.querySelectorAll('.step-pill');
+  var activeFilter='all';
+
+  function applyFilters(){
+    var query=(searchInput.value||'').trim().toLowerCase();
+    var anyVisible=false;
+    sections.forEach(function(section){
+      var sectionHasVisible=false;
+      section.querySelectorAll('.res-item[data-type]').forEach(function(item){
+        var type=item.getAttribute('data-type');
+        var text=item.textContent.toLowerCase();
+        var matchesFilter=activeFilter==='all'||type===activeFilter;
+        var matchesQuery=!query||text.indexOf(query)!==-1;
+        var visible=matchesFilter&&matchesQuery;
+        item.style.display=visible?'':'none';
+        if(visible){sectionHasVisible=true;anyVisible=true;}
+      });
+      section.classList.toggle('res-section-hidden',!sectionHasVisible);
+    });
+    noResults.classList.toggle('show',!anyVisible);
+  }
+
+  searchInput.addEventListener('input',applyFilters);
+  chips.forEach(function(chip){
+    chip.addEventListener('click',function(){
+      chips.forEach(function(c){c.classList.remove('active');});
+      chip.classList.add('active');
+      activeFilter=chip.getAttribute('data-filter');
+      applyFilters();
+    });
+  });
+
+  if('IntersectionObserver' in window){
+    var spy=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var id=entry.target.id;
+          stepPills.forEach(function(p){
+            p.classList.toggle('active',p.getAttribute('href')==='#'+id);
+          });
+        }
+      });
+    },{rootMargin:'-40% 0px -50% 0px'});
+    sections.forEach(function(s){spy.observe(s);});
+  }
+})();
+
 (function(){
   var overlay=document.getElementById('wo-overlay');
   var openBtn=document.getElementById('wo-open-btn');
