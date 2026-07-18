@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 хуков для Reels, которые останавливают скролл — wikki.ocean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#050508;
+  --surface:#0D1A26;
+  --ivory:#F2EDE2;
+  --id:rgba(255,255,255,.87);
+  --id2:rgba(255,255,255,.6);
+  --idd:rgba(255,255,255,.38);
+  --line:rgba(242,237,226,.10);
+  --line2:rgba(242,237,226,.16);
+  --purple:#9B6FE8;--purple-br:#C4A4FF;
+  --teal:#00C4D4;--teal-br:#5EE0EE;
+  --font:'DM Sans',system-ui,-apple-system,sans-serif;
+  --mono:'SFMono-Regular',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);color:var(--ivory);-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-color:var(--black);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:120px 120px;
+}
+a{color:inherit;text-decoration:none}
+
+/* progress bar */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--purple),var(--teal-br));z-index:100;transition:width .1s linear}
+
+/* orbs */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:-1}
+.orb-purple{background:radial-gradient(circle,rgba(155,111,232,.26) 0%,rgba(91,47,190,.09) 70%)}
+.orb-teal{background:radial-gradient(circle,rgba(0,196,212,.20) 0%,rgba(0,196,212,.05) 70%)}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--idd);margin-bottom:24px;transition:color .2s}
+.back-link:hover{color:var(--ivory)}
+
+main{max-width:680px;margin:0 auto;padding:64px 32px 120px}
+
+/* meta row */
+.meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:24px}
+.meta-badge{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple-br);background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.3);border-radius:100px;padding:6px 13px}
+.meta-dot{font-size:12px;color:var(--idd)}
+.meta-item{font-size:12.5px;color:var(--id2);letter-spacing:.02em}
+
+/* h1 */
+@keyframes grad-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+h1{font-size:clamp(38px,5.6vw,64px);font-weight:900;line-height:.94;letter-spacing:-.03em;margin-bottom:22px;text-transform:uppercase;background:linear-gradient(135deg,#FFFFFF 0%,#E8DFFF 25%,#C4A4FF 50%,#9B6FE8 75%,#5B2FBE 100%);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:grad-shift 6s ease-in-out infinite}
+
+.desc{font-size:16px;color:var(--id);line-height:1.7;max-width:560px;margin-bottom:40px}
+.desc em{font-style:normal;color:var(--teal-br)}
+.desc strong{color:var(--ivory);font-weight:700}
+
+/* toc */
+.toc{padding:22px 24px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.4);margin-bottom:24px}
+.toc-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+.toc-list{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px}
+.toc-list a{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--id2);transition:color .2s}
+.toc-list a:hover{color:var(--ivory)}
+.toc-num{font-size:11px;font-weight:800;color:var(--purple-br);font-family:var(--mono)}
+
+/* copy-all bar */
+.copyall{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:56px;padding:16px 20px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(90deg,rgba(155,111,232,.06),rgba(0,196,212,.015))}
+.copyall span{font-size:13px;color:var(--id2)}
+.copyall button{font-size:12.5px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.12);border:1px solid rgba(155,111,232,.35);border-radius:100px;padding:9px 18px;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:background .2s,border-color .2s,transform .18s cubic-bezier(.2,.8,.2,1)}
+.copyall button:hover{background:rgba(155,111,232,.2);border-color:rgba(155,111,232,.6);transform:translateY(-1px)}
+.copyall button:active{transform:translateY(0)}
+.copyall button.copied{color:var(--teal-br);border-color:rgba(0,196,212,.4);background:rgba(0,196,212,.1)}
+
+/* hook group */
+.hook-group{margin-bottom:52px;scroll-margin-top:24px}
+.hg-head{margin-bottom:20px}
+.hg-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--purple-br);display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.hg-kicker .hg-index{font-family:var(--mono);color:var(--teal-br)}
+.hg-title{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.hg-why{font-size:13.5px;color:var(--id2);line-height:1.6}
+.hook-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.hook-item{display:flex;gap:16px;padding:14px 4px;border-bottom:1px solid var(--line);transition:background .2s}
+.hook-item:last-child{border-bottom:none}
+.hook-item:hover{background:rgba(242,237,226,.02)}
+.hook-n{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(155,111,232,.1);border:1px solid rgba(155,111,232,.22);color:var(--purple-br);font-size:12px;font-weight:800;font-family:var(--mono);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.hook-text{font-size:15px;color:var(--id);line-height:1.55}
+.hook-text .ph{color:var(--teal-br)}
+
+/* inline funnel bridge (точка 1) */
+.bridge{margin:8px 0 56px;padding:24px 26px;border:1px solid rgba(155,111,232,.2);border-radius:14px;background:linear-gradient(120deg,rgba(155,111,232,.08),rgba(0,196,212,.02));display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.bridge p{font-size:14px;color:var(--id);line-height:1.6;max-width:400px}
+.bridge p strong{color:var(--ivory)}
+.bridge-link{flex-shrink:0;font-size:13px;font-weight:700;color:var(--purple-br);display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(155,111,232,.4);border-radius:100px;padding:11px 20px;cursor:pointer;background:rgba(155,111,232,.08);font-family:var(--font);transition:background .2s,border-color .2s,transform .18s cubic-bezier(.2,.8,.2,1)}
+.bridge-link:hover{background:rgba(155,111,232,.18);border-color:rgba(155,111,232,.65);transform:translateY(-1px)}
+.bridge-link svg{width:14px;height:14px}
+
+/* divider + formula */
+.divider{border:none;height:1px;margin:8px 0 48px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent)}
+.section-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px}
+.formula-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.formula-list li{display:flex;gap:14px;font-size:14.5px;color:var(--id);line-height:1.6}
+.formula-list li strong{color:var(--ivory)}
+.formula-list .fx{flex-shrink:0;width:24px;height:24px;border-radius:7px;background:rgba(0,196,212,.1);color:var(--teal-br);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-top:1px}
+.body{font-size:15px;color:var(--id);line-height:1.75;margin-bottom:24px}
+.body em{font-style:normal;color:var(--ivory)}
+
+/* CTA (точка 2) */
+.cta-block{margin-top:56px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(0,196,212,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
+.cta-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:14px}
+.cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:uppercase}
+.cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
+.cta-btn-ghost{display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:var(--purple-br);background:rgba(155,111,232,.14);border:1px solid rgba(155,111,232,.5);padding:14px 28px;border-radius:100px;cursor:pointer;font-family:var(--font);transition:background .2s ease,border-color .2s ease,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 24px -14px rgba(155,111,232,.5)}
+.cta-btn-ghost:hover{background:rgba(155,111,232,.22);border-color:rgba(155,111,232,.72);transform:translateY(-2px);box-shadow:0 12px 28px -12px rgba(155,111,232,.6)}
+.cta-btn-ghost:active{transform:translateY(0);background:rgba(155,111,232,.18)}
+.cta-btn-ghost:focus-visible{outline:2px solid var(--purple-br);outline-offset:3px}
+
+/* modal */
+body.wo-modal-lock{overflow:hidden}
+.wo-modal-overlay{position:fixed;inset:0;background:rgba(3,10,20,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;opacity:0;visibility:hidden;transition:opacity .3s ease}
+.wo-modal-overlay.open{opacity:1;visibility:visible}
+.wo-modal{position:relative;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#0F1D2B,#040B15);border:1px solid rgba(196,164,255,.16);border-radius:20px;padding:44px 40px 40px;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(155,111,232,.05);transform:translateY(18px) scale(.97);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.wo-modal-overlay.open .wo-modal{transform:translateY(0) scale(1)}
+.wo-modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(242,237,226,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--id);font-size:15px;line-height:1;transition:border-color .2s,color .2s,background .2s,transform .2s cubic-bezier(.2,.8,.2,1)}
+.wo-modal-close:hover{border-color:rgba(155,111,232,.4);color:var(--ivory);background:rgba(155,111,232,.06);transform:rotate(90deg)}
+.wo-modal-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-br);margin-bottom:12px}
+.wo-modal h3{font-size:clamp(19px,2.4vw,23px);font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-bottom:10px;text-transform:uppercase}
+.wo-modal-desc{font-size:13.5px;color:var(--id);line-height:1.62;max-width:420px;margin-bottom:28px}
+.wo-form{max-width:480px}
+.wo-field{margin-bottom:14px}
+.wo-field>label{display:block;font-size:11px;color:var(--idd);letter-spacing:.06em;margin-bottom:8px}
+.wo-input,.wo-textarea{width:100%;padding:14px 16px;background:rgba(242,237,226,.03);border:1px solid var(--line);border-radius:10px;color:var(--ivory);font-family:var(--font);font-size:14px;transition:border-color .2s,background .2s}
+.wo-input:focus,.wo-textarea:focus{outline:none;border-color:var(--purple);background:rgba(155,111,232,.05)}
+.wo-input::placeholder,.wo-textarea::placeholder{color:var(--idd)}
+.wo-textarea{resize:vertical;min-height:88px;line-height:1.5}
+.wo-checks{display:flex;flex-direction:column;gap:8px}
+.wo-check{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s}
+.wo-check:hover{border-color:rgba(155,111,232,.3)}
+.wo-check:has(input:checked){border-color:var(--purple-br);background:rgba(155,111,232,.06)}
+.wo-check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--line);border-radius:5px;background:rgba(242,237,226,.03);flex-shrink:0;cursor:pointer;position:relative;transition:border-color .2s,background .2s}
+.wo-check input:checked{background:var(--purple-br);border-color:var(--purple-br)}
+.wo-check input:checked::after{content:'';position:absolute;left:5px;top:1px;width:5px;height:9px;border:solid var(--black);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.wo-check span{font-size:13.5px;color:var(--id2)}
+.wo-check:has(input:checked) span{color:var(--ivory)}
+.wo-error{font-size:12px;color:var(--teal-br);margin-top:8px;display:none}
+.wo-error.show{display:block}
+.wo-submit{width:100%;padding:15px;margin-top:6px;font-size:14px;font-weight:700;color:var(--black);background:linear-gradient(180deg,var(--purple-br),var(--purple));border:none;border-radius:100px;cursor:pointer;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,filter .2s ease;font-family:var(--font);box-shadow:0 1px 2px rgba(0,0,0,.25),0 8px 20px -10px rgba(155,111,232,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+.wo-submit:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.wo-submit:active{transform:translateY(0);filter:brightness(.97)}
+.wo-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;filter:none}
+.wo-success{display:none;padding:32px 0 8px}
+.wo-success.show{display:block}
+.wo-success p{font-size:15px;color:var(--ivory);line-height:1.6}
+.wo-success span{font-size:13px;color:var(--id2)}
+
+/* more resources */
+.more-section{margin-top:88px}
+.more-label{font-size:11px;color:var(--idd);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px}
+.more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.more-card{display:block;padding:24px;border:1px solid var(--line);border-radius:12px;transition:border-color .35s cubic-bezier(.16,1,.3,1),background .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
+.more-card:hover{border-color:rgba(155,111,232,.4);background:rgba(155,111,232,.04);transform:translateY(-3px);box-shadow:0 24px 48px -24px rgba(0,0,0,.6),0 0 0 1px rgba(155,111,232,.08)}
+.more-card-label{font-size:10px;color:var(--idd);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.more-card-title{font-size:15px;font-weight:600;color:var(--ivory);line-height:1.3}
+
+/* to top */
+.to-top{position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:rgba(13,26,38,.8);backdrop-filter:blur(10px);color:var(--id);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .3s,transform .3s,border-color .2s,background .2s;z-index:50}
+.to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.to-top:hover{border-color:rgba(155,111,232,.5);background:rgba(155,111,232,.12)}
+.to-top svg{width:18px;height:18px}
+
+footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.footer-logo{height:64px;width:auto;display:block}
+
+@media(max-width:600px){
+  main{padding:48px 20px 80px}
+  .toc-list{grid-template-columns:1fr}
+  .copyall{flex-direction:column;align-items:flex-start;gap:12px}
+  .bridge{flex-direction:column;align-items:flex-start}
+  .cta-block{padding:28px 22px}
+  .wo-modal{padding:36px 24px 32px;border-radius:16px}
+  .to-top{right:16px;bottom:16px}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="orb orb-purple" style="width:600px;height:600px;top:-160px;right:-160px;opacity:.75"></div>
+<div class="orb orb-teal" style="width:400px;height:400px;bottom:-120px;left:-140px;opacity:.6"></div>
+
+<main>
+
+  <a href="library.html" class="back-link">← Библиотека ресурсов</a>
+
+  <div class="meta-row">
+    <span class="meta-badge">Шаблон</span>
+    <span class="meta-dot">·</span>
+    <span class="meta-item">7 минут</span>
+    <span class="meta-dot">·</span>
+    <span class="meta-item">Личный бренд</span>
+  </div>
+
+  <h1>30 хуков<br><span>для Reels</span></h1>
+
+  <p class="desc">
+    У тебя есть <strong>три секунды</strong>. За это время человек решает — смотреть или листать. Ролик проигрывает не на монтаже и не на смысле, а на первой фразе: если он теряет <em>40–50% зрителей в первые 3 секунды</em>, алгоритм перестаёт его продвигать.<br><br>
+    Здесь 30 рабочих хуков по 6 типам. Под каждым — почему он держит внимание, чтобы ты не просто копировала, а собирала свои.
+  </p>
+
+  <div class="toc">
+    <p class="toc-label">6 типов хуков</p>
+    <div class="toc-list">
+      <a href="#t1"><span class="toc-num">01</span> Через боль</a>
+      <a href="#t2"><span class="toc-num">02</span> Через любопытство</a>
+      <a href="#t3"><span class="toc-num">03</span> Через миф и ошибку</a>
+      <a href="#t4"><span class="toc-num">04</span> Через результат</a>
+      <a href="#t5"><span class="toc-num">05</span> Через контраст</a>
+      <a href="#t6"><span class="toc-num">06</span> Через личное</a>
+    </div>
+  </div>
+
+  <div class="copyall">
+    <span>Забери все 30 хуков себе в заметки</span>
+    <button id="copyall-btn" type="button">Скопировать все хуки</button>
+  </div>
+
+  <!-- 1 -->
+  <section class="hook-group" id="t1">
+    <div class="hg-head">
+      <div class="hg-kicker"><span class="hg-index">01</span> Через боль</div>
+      <h2 class="hg-title">Попадаешь в то, что уже беспокоит</h2>
+      <p class="hg-why">Человек узнаёт себя и останавливается. Чем конкретнее боль, тем сильнее.</p>
+    </div>
+    <ol class="hook-list">
+      <li class="hook-item"><span class="hook-n">1</span><span class="hook-text">Ты делаешь <span class="ph">[тему]</span> каждый день, а результата нет. Вот почему.</span></li>
+      <li class="hook-item"><span class="hook-n">2</span><span class="hook-text">Если ты до сих пор <span class="ph">[делаешь X вручную]</span> — теряешь часы каждую неделю.</span></li>
+      <li class="hook-item"><span class="hook-n">3</span><span class="hook-text">Самая дорогая ошибка в <span class="ph">[нише]</span> — и её совершают почти все.</span></li>
+      <li class="hook-item"><span class="hook-n">4</span><span class="hook-text">Ты не растёшь в <span class="ph">[теме]</span> не из-за лени. Причина скучнее.</span></li>
+      <li class="hook-item"><span class="hook-n">5</span><span class="hook-text">Три часа на один пост — и он набирает 200 просмотров. Знакомо?</span></li>
+    </ol>
+  </section>
+
+  <!-- 2 -->
+  <section class="hook-group" id="t2">
+    <div class="hg-head">
+      <div class="hg-kicker"><span class="hg-index">02</span> Через любопытство</div>
+      <h2 class="hg-title">Открываешь петлю, которую хочется закрыть</h2>
+      <p class="hg-why">Мозг не терпит незавершённость и досматривает, чтобы узнать концовку.</p>
+    </div>
+    <ol class="hook-list">
+      <li class="hook-item"><span class="hook-n">6</span><span class="hook-text">Я перестала <span class="ph">[делать привычное]</span> — и <span class="ph">[результат]</span> вырос вдвое.</span></li>
+      <li class="hook-item"><span class="hook-n">7</span><span class="hook-text">Есть один приём в <span class="ph">[теме]</span>, про который почему-то молчат.</span></li>
+      <li class="hook-item"><span class="hook-n">8</span><span class="hook-text">Я потратила <span class="ph">[сумму/время]</span> на <span class="ph">[X]</span>, чтобы ты не потратила.</span></li>
+      <li class="hook-item"><span class="hook-n">9</span><span class="hook-text">То, что мне сказал клиент на разборе, я теперь повторяю всем.</span></li>
+      <li class="hook-item"><span class="hook-n">10</span><span class="hook-text">Один вопрос, который меняет весь подход к <span class="ph">[теме]</span>.</span></li>
+    </ol>
+  </section>
+
+  <!-- 3 -->
+  <section class="hook-group" id="t3">
+    <div class="hg-head">
+      <div class="hg-kicker"><span class="hg-index">03</span> Через миф и ошибку</div>
+      <h2 class="hg-title">Ломаешь то, во что человек верит</h2>
+      <p class="hg-why">Несогласие держит у экрана: хочется проверить, прав ли ты.</p>
+    </div>
+    <ol class="hook-list">
+      <li class="hook-item"><span class="hook-n">11</span><span class="hook-text">«<span class="ph">[Популярный совет]</span>» — и именно поэтому у тебя не получается.</span></li>
+      <li class="hook-item"><span class="hook-n">12</span><span class="hook-text">Забудь всё, что тебе говорили про <span class="ph">[тему]</span>.</span></li>
+      <li class="hook-item"><span class="hook-n">13</span><span class="hook-text">Тебе продали миф, что для <span class="ph">[результата]</span> нужно <span class="ph">[X]</span>. Неправда.</span></li>
+      <li class="hook-item"><span class="hook-n">14</span><span class="hook-text">Все делают <span class="ph">[тему]</span> вот так. И почти все ошибаются.</span></li>
+      <li class="hook-item"><span class="hook-n">15</span><span class="hook-text">Если тебе советуют <span class="ph">[частый совет]</span> — беги.</span></li>
+    </ol>
+  </section>
+
+  <!-- 4 -->
+  <section class="hook-group" id="t4">
+    <div class="hg-head">
+      <div class="hg-kicker"><span class="hg-index">04</span> Через результат</div>
+      <h2 class="hg-title">Показываешь точку Б</h2>
+      <p class="hg-why">Человек хочет туда же — и остаётся узнать дорогу.</p>
+    </div>
+    <ol class="hook-list">
+      <li class="hook-item"><span class="hook-n">16</span><span class="hook-text">Как я <span class="ph">[результат]</span> за <span class="ph">[срок]</span> без <span class="ph">[привычного условия]</span>.</span></li>
+      <li class="hook-item"><span class="hook-n">17</span><span class="hook-text">От <span class="ph">[точка А]</span> до <span class="ph">[точка Б]</span> за <span class="ph">[срок]</span>. Разбираю по шагам.</span></li>
+      <li class="hook-item"><span class="hook-n">18</span><span class="hook-text">Этот приём принёс мне <span class="ph">[конкретный результат]</span>. Забирай.</span></li>
+      <li class="hook-item"><span class="hook-n">19</span><span class="hook-text"><span class="ph">[Число]</span> клиентов с одного <span class="ph">[действия]</span>. Рассказываю как.</span></li>
+      <li class="hook-item"><span class="hook-n">20</span><span class="hook-text">Я нашла способ делать <span class="ph">[тему]</span> в два раза быстрее.</span></li>
+    </ol>
+  </section>
+
+  <!-- bridge (funnel point 1) -->
+  <div class="bridge">
+    <p><strong>Хук — это только вход.</strong> Система, которая выдаёт их на потоке под твой блог и превращает в клиентов, — это практикум «Океан Влияния».</p>
+    <button class="bridge-link" type="button" data-preselect="practicum">Что это <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+  </div>
+
+  <!-- 5 -->
+  <section class="hook-group" id="t5">
+    <div class="hg-head">
+      <div class="hg-kicker"><span class="hg-index">05</span> Через контраст и провокацию</div>
+      <h2 class="hg-title">Сталкиваешь ожидание с реальностью</h2>
+      <p class="hg-why">Резкость цепляет — но за ней должна быть польза, иначе это пустой шок.</p>
+    </div>
+    <ol class="hook-list">
+      <li class="hook-item"><span class="hook-n">21</span><span class="hook-text">Хватит <span class="ph">[популярное действие]</span>. Оно тебя тормозит.</span></li>
+      <li class="hook-item"><span class="hook-n">22</span><span class="hook-text">Пока ты <span class="ph">[делаешь X]</span>, другие уже <span class="ph">[делают Y]</span>.</span></li>
+      <li class="hook-item"><span class="hook-n">23</span><span class="hook-text">Твой <span class="ph">[продукт/блог]</span> не покупают не из-за цены.</span></li>
+      <li class="hook-item"><span class="hook-n">24</span><span class="hook-text"><span class="ph">[Модный инструмент]</span> тебе не нужен. Нужно другое.</span></li>
+      <li class="hook-item"><span class="hook-n">25</span><span class="hook-text">Я была уверена, что <span class="ph">[убеждение]</span>. Пока не проверила.</span></li>
+    </ol>
+  </section>
+
+  <!-- 6 -->
+  <section class="hook-group" id="t6">
+    <div class="hg-head">
+      <div class="hg-kicker"><span class="hg-index">06</span> Через личное и историю</div>
+      <h2 class="hg-title">Начинаешь с себя</h2>
+      <p class="hg-why">Живому человеку доверяют больше, чем совету. Честность про провал работает сильнее победы.</p>
+    </div>
+    <ol class="hook-list">
+      <li class="hook-item"><span class="hook-n">26</span><span class="hook-text">Год назад я <span class="ph">[точка А]</span>. Сегодня <span class="ph">[точка Б]</span>. Что изменилось.</span></li>
+      <li class="hook-item"><span class="hook-n">27</span><span class="hook-text">Мне было стыдно признаться, но <span class="ph">[честное признание]</span>.</span></li>
+      <li class="hook-item"><span class="hook-n">28</span><span class="hook-text">Худший совет, который я получила в <span class="ph">[нише]</span>.</span></li>
+      <li class="hook-item"><span class="hook-n">29</span><span class="hook-text">Я чуть не бросила <span class="ph">[дело]</span>. Спасло вот это.</span></li>
+      <li class="hook-item"><span class="hook-n">30</span><span class="hook-text">Мой первый <span class="ph">[провал]</span> научил меня большему, чем все курсы.</span></li>
+    </ol>
+  </section>
+
+  <hr class="divider">
+
+  <p class="section-label">Формула своего хука — когда заготовки закончатся</p>
+  <ul class="formula-list">
+    <li><span class="fx">1</span><span><strong>Конкретика вместо общего.</strong> «Выросла вдвое за месяц», а не «стало лучше».</span></li>
+    <li><span class="fx">2</span><span><strong>Обещание в первой фразе.</strong> Человек сразу понимает, что получит, если досмотрит.</span></li>
+    <li><span class="fx">3</span><span><strong>Разрыв шаблона.</strong> Идёт против того, что принято думать в нише.</span></li>
+    <li><span class="fx">4</span><span><strong>Ты, а не я.</strong> Про зрителя и его ситуацию, а не только про себя.</span></li>
+  </ul>
+  <p class="body">Проверь готовый хук вслух: он про конкретное? Обещает результат или интригу в первой строке? Звучит как живая речь, а не заголовок статьи? Если да — <em>снимай</em>.</p>
+
+  <!-- CTA (funnel point 2) -->
+  <div class="cta-block">
+    <p class="cta-eyebrow">разбор</p>
+    <h3>Хуки есть. А что дальше?</h3>
+    <p>Хук приводит внимание. Дальше нужна система: о чём снимать, как вести к продукту, где брать время. Запишись на разбор — расскажи свою ситуацию, отвечу лично и предложу план под твою задачу.</p>
+    <button class="cta-btn-ghost" type="button" id="wo-open-btn">Записаться на разбор</button>
+  </div>
+
+  <!-- more -->
+  <div class="more-section">
+    <p class="more-label">Ещё в библиотеке</p>
+    <div class="more-grid">
+      <a href="claude-humanizer.html" class="more-card">
+        <p class="more-card-label">Промт</p>
+        <p class="more-card-title">Текст без ИИ</p>
+      </a>
+      <a href="claude-guide.html" class="more-card">
+        <p class="more-card-label">Руководство</p>
+        <p class="more-card-title">5 уровней Claude</p>
+      </a>
+      <a href="library.html" class="more-card">
+        <p class="more-card-label">Все материалы</p>
+        <p class="more-card-title">Вся библиотека →</p>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="wo-modal-overlay" id="wo-overlay">
+  <div class="wo-modal" role="dialog" aria-modal="true" aria-labelledby="wo-modal-title">
+    <button class="wo-modal-close" id="wo-close-btn" type="button" aria-label="Закрыть">✕</button>
+    <div id="wo-form-wrap">
+      <p class="wo-modal-eyebrow">заявка</p>
+      <h3 id="wo-modal-title">Заявка на разбор</h3>
+      <p class="wo-modal-desc">Опиши, что происходит сейчас, — отвечу лично и разберу именно твой случай.</p>
+      <form id="wo-form" class="wo-form" action="https://docs.google.com/forms/d/e/1FAIpQLSd-a5-CHpZNwLvAD1YZuwGQDNSIjNFQaMB5eFdwIvWj3OtCLg/formResponse" method="POST" target="wo-hidden-frame">
+        <div class="wo-field">
+          <label for="wo-name">имя</label>
+          <input class="wo-input" type="text" id="wo-name" name="entry.1994539439" placeholder="Как к тебе обращаться" required>
+        </div>
+        <div class="wo-field">
+          <label for="wo-contact">контакт для связи</label>
+          <input class="wo-input" type="text" id="wo-contact" name="entry.1074568097" placeholder="Telegram или номер" required>
+        </div>
+        <div class="wo-field">
+          <label>что интересует</label>
+          <div class="wo-checks">
+            <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Практикум &quot;Океан Влияния&quot;"><span>практикум «океан влияния»</span></label>
+            <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Контент-завод под ключ"><span>контент-завод под ключ</span></label>
+            <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="AI-автоматизации"><span>ai-автоматизации</span></label>
+            <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Личная работа"><span>личная работа</span></label>
+            <label class="wo-check"><input type="checkbox" name="entry.1345489343" value="Не определился(-ась)"><span>ещё не определился(-ась)</span></label>
+          </div>
+          <p class="wo-error" id="wo-check-error">выбери хотя бы один вариант</p>
+        </div>
+        <div class="wo-field">
+          <label for="wo-request">какой запрос</label>
+          <textarea class="wo-textarea" id="wo-request" name="entry.1982844077" placeholder="Что сейчас происходит, что хочешь построить" required></textarea>
+        </div>
+        <button class="wo-submit" type="submit" id="wo-submit">отправить заявку</button>
+      </form>
+    </div>
+    <div class="wo-success" id="wo-success">
+      <p>Заявка отправлена</p>
+      <span>Отвечу в течение 24 часов.</span>
+    </div>
+    <iframe name="wo-hidden-frame" style="display:none" title="wo-hidden-frame"></iframe>
+  </div>
+</div>
+
+<button class="to-top" id="to-top" type="button" aria-label="Наверх">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+</button>
+
+<footer>
+  <img src="wikki-logo-mark.png" alt="wikki.ocean" class="footer-logo">
+</footer>
+
+<script>
+(function(){
+  // progress bar
+  var progress=document.getElementById('progress');
+  var toTop=document.getElementById('to-top');
+  function onScroll(){
+    var h=document.documentElement;
+    var scrolled=h.scrollTop/(h.scrollHeight-h.clientHeight);
+    progress.style.width=(scrolled*100)+'%';
+    toTop.classList.toggle('show',h.scrollTop>600);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  // copy all hooks
+  var copyBtn=document.getElementById('copyall-btn');
+  copyBtn.addEventListener('click',function(){
+    var lines=[];
+    document.querySelectorAll('.hook-item').forEach(function(item){
+      var n=item.querySelector('.hook-n').textContent.trim();
+      var t=item.querySelector('.hook-text').textContent.trim();
+      lines.push(n+'. '+t);
+    });
+    var text='30 хуков для Reels — wikki.ocean\n\n'+lines.join('\n');
+    navigator.clipboard.writeText(text).then(function(){
+      copyBtn.textContent='Скопировано ✓';
+      copyBtn.classList.add('copied');
+      setTimeout(function(){copyBtn.textContent='Скопировать все хуки';copyBtn.classList.remove('copied');},2000);
+    });
+  });
+
+  // modal
+  var overlay=document.getElementById('wo-overlay');
+  var openBtn=document.getElementById('wo-open-btn');
+  var closeBtn=document.getElementById('wo-close-btn');
+  function openModal(preselect){
+    overlay.classList.add('open');document.body.classList.add('wo-modal-lock');
+    if(preselect==='practicum'){
+      var box=document.querySelector('input[value="Практикум \\"Океан Влияния\\""]');
+      if(box)box.checked=true;
+    }
+  }
+  function closeModal(){overlay.classList.remove('open');document.body.classList.remove('wo-modal-lock');}
+  openBtn.addEventListener('click',function(){openModal();});
+  document.querySelectorAll('.bridge-link').forEach(function(b){
+    b.addEventListener('click',function(){openModal(b.getAttribute('data-preselect'));});
+  });
+  closeBtn.addEventListener('click',closeModal);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closeModal();});
+
+  // form
+  var form=document.getElementById('wo-form');
+  var formWrap=document.getElementById('wo-form-wrap');
+  var checkError=document.getElementById('wo-check-error');
+  var submitBtn=document.getElementById('wo-submit');
+  form.addEventListener('submit',function(e){
+    var checked=form.querySelectorAll('input[name="entry.1345489343"]:checked');
+    if(checked.length===0){e.preventDefault();checkError.classList.add('show');return;}
+    checkError.classList.remove('show');
+    submitBtn.disabled=true;submitBtn.textContent='отправляю…';
+    setTimeout(function(){formWrap.style.display='none';document.getElementById('wo-success').classList.add('show');},700);
+  });
+})();
+</script>
+
+</body>
+</html>
