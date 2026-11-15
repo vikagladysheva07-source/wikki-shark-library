@@ -199,6 +199,80 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
 .ba-q span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 .ba-grid{margin-top:0}
 @media(max-width:600px){.struct{grid-template-columns:1fr}.tpl-box pre{max-height:420px}}
+.hero-act{display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin:-16px 0 64px}
+.tpl-copy-lg{font-size:15px;padding:14px 28px;min-height:48px;color:#fff;background:linear-gradient(135deg,rgba(155,111,232,.9),rgba(91,47,190,.9));border-color:rgba(155,111,232,.6)}
+.tpl-copy-lg:hover{background:linear-gradient(135deg,#9B6FE8,#5B2FBE)}
+.tpl-copy-lg.copied{color:#fff;background:linear-gradient(135deg,rgba(155,111,232,.9),rgba(91,47,190,.9))}
+.hero-link{font-size:14px;color:var(--id2);transition:color .2s}
+.hero-link:hover{color:var(--ivory)}
+.fold{margin:0 0 64px;border:1px solid var(--line);border-radius:14px;background:rgba(16,16,23,.6)}
+.fold summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;font-size:15px;font-weight:700;color:var(--ivory);min-height:48px}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary span{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.fold summary span::after{content:" +"}
+.fold[open] summary span::after{content:" −"}
+.fold ul{list-style:none;padding:0 20px 20px;display:flex;flex-direction:column;gap:10px}
+.fold li{font-size:14px;line-height:1.55;color:var(--id2)}
+.fold li b{color:var(--ivory);font-weight:700}
+/* glass pass 15.11: нейтральное стекло, фиолетовый только в тонкой рамке и свечении */
+.steps li,.struct div,.fold,.ba-card,.ba-card.after,.tpl-box,.cta-block,.note{background:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.012));border:1px solid rgba(242,237,226,.10);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 48px -32px rgba(0,0,0,.7)}
+.ba-card.after{border-color:rgba(155,111,232,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 56px -28px rgba(91,47,190,.55)}
+.ba-card.after .ba-label{color:var(--ivory)}
+.ba-card.after p{color:var(--id)}
+.note{border-left:1px solid rgba(155,111,232,.4);border-radius:14px}
+.note code,.desc em,.tpl-ph{color:var(--ivory)}
+.steps li::before{background:rgba(255,255,255,.04);border:1px solid rgba(242,237,226,.18);color:var(--ivory);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.tpl-copy,.tpl-copy.copied,.cta-btn-ghost,.wo-submit{color:var(--ivory);background:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.012));border:1px solid rgba(242,237,226,.2);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.tpl-copy:hover,.cta-btn-ghost:hover,.wo-submit:hover{background:linear-gradient(165deg,rgba(255,255,255,.1),rgba(255,255,255,.03));border-color:rgba(155,111,232,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 32px -16px rgba(91,47,190,.7)}
+.tpl-copy:active,.cta-btn-ghost:active{background:rgba(255,255,255,.04)}
+.tpl-copy-lg,.tpl-copy-lg.copied{border-color:rgba(155,111,232,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 16px 36px -18px rgba(91,47,190,.6)}
+.wo-modal-eyebrow,.wo-error{color:var(--muted)}
+.wo-input:focus,.wo-textarea:focus{border-color:rgba(155,111,232,.5);background:rgba(255,255,255,.04)}
+.wo-check:has(input:checked){border-color:rgba(155,111,232,.45);background:rgba(255,255,255,.04)}
+.wo-check input:checked{background:rgba(255,255,255,.14);border-color:rgba(242,237,226,.4)}
+.more-card:hover{background:rgba(255,255,255,.03)}
+h1{display:inline-block;background:linear-gradient(100deg,#FFFFFF 0%,#FFFFFF 18%,#E8DFFF 45%,#C4A4FF 72%,#9B6FE8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:none}
+/* подсветка 15.11: фиолетовый только светом, мягко */
+.steps li,.struct div,.fold,.ba-card,.tpl-box,.cta-block{position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 28px 60px -38px rgba(91,47,190,.4)}
+.steps li::after,.struct div::after,.fold::after,.ba-card::after,.tpl-box::after,.cta-block::after{content:"";position:absolute;left:28px;right:28px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(155,111,232,.38),transparent);pointer-events:none}
+.steps li::before{border-color:rgba(155,111,232,.42);box-shadow:0 0 12px rgba(155,111,232,.24),inset 0 0 8px rgba(155,111,232,.1)}
+.tpl-copy,.cta-btn-ghost{border-color:rgba(155,111,232,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 16px -6px rgba(155,111,232,.28)}
+.tpl-copy-lg,.tpl-copy-lg.copied{border-color:rgba(155,111,232,.46);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 22px -6px rgba(155,111,232,.3),0 16px 36px -20px rgba(91,47,190,.55)}
+.ba-card.after{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 36px -18px rgba(155,111,232,.3),0 28px 60px -34px rgba(91,47,190,.45)}
+.cta-block{border-color:rgba(155,111,232,.26);background:radial-gradient(120% 60% at 50% 0%,rgba(91,47,190,.13),transparent 60%),linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 60px -30px rgba(155,111,232,.32),0 32px 64px -32px rgba(0,0,0,.7)}
+/* demo chat */
+.demo{margin:0 0 64px}
+.demo-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.demo-tab{font-family:var(--font);font-size:13.5px;font-weight:500;color:var(--id2);min-height:40px;padding:9px 16px;border-radius:100px;cursor:pointer;background:rgba(255,255,255,.03);border:1px solid rgba(242,237,226,.12);transition:color .2s,border-color .2s,background .2s,box-shadow .2s}
+.demo-tab:hover{color:var(--ivory);border-color:rgba(242,237,226,.24)}
+.demo-tab.on{color:var(--ivory);background:rgba(255,255,255,.06);border-color:rgba(155,111,232,.42);box-shadow:0 0 16px -6px rgba(155,111,232,.3)}
+.demo-tab:focus-visible{outline:2px solid rgba(155,111,232,.6);outline-offset:2px}
+.demo-wins{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+.win{position:relative;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:linear-gradient(165deg,rgba(255,255,255,.045),rgba(255,255,255,.01));border:1px solid rgba(242,237,226,.10);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 28px 60px -38px rgba(0,0,0,.8)}
+.win.partner{border-color:rgba(155,111,232,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 40px -18px rgba(155,111,232,.4),0 28px 60px -34px rgba(91,47,190,.45)}
+.win-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid rgba(242,237,226,.08);background:rgba(255,255,255,.02)}
+.win-bar i{width:8px;height:8px;border-radius:50%;background:rgba(242,237,226,.16)}
+.win-bar span{margin-left:8px;font-size:12.5px;font-weight:500;color:var(--id2)}
+.win.partner .win-bar span{color:var(--ivory)}
+.win-body{flex:1;display:flex;flex-direction:column;gap:16px;padding:18px 14px}
+.msg.me{align-self:flex-end;max-width:86%;padding:10px 14px;border-radius:16px 16px 4px 16px;background:rgba(255,255,255,.09);border:1px solid rgba(242,237,226,.10)}
+.msg.me p{font-size:14px;line-height:1.5;color:var(--ivory)}
+.ai-row{display:flex;gap:10px;align-items:flex-start}
+.ai-av{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--id2);background:rgba(255,255,255,.05);border:1px solid rgba(242,237,226,.14)}
+.win.partner .ai-av{color:var(--ivory);border-color:rgba(155,111,232,.45);box-shadow:0 0 12px -2px rgba(155,111,232,.3)}
+.ai-txt p{font-size:14px;line-height:1.62;color:var(--id2)}
+.win.partner .ai-txt p{color:var(--id)}
+.msg-who{display:block;font-size:12px;font-weight:700;color:var(--id2);margin-bottom:4px}
+.win.partner .msg-who{color:var(--ivory)}
+.win-input{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 12px 12px;padding:9px 9px 9px 14px;border-radius:100px;border:1px solid rgba(242,237,226,.10);background:rgba(0,0,0,.25)}
+.win-input span{font-size:12.5px;color:var(--idd)}
+.win-input b{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--id2);background:rgba(255,255,255,.07)}
+.win-body p{transition:opacity .18s ease}
+.demo-wins.swap .win-body p{opacity:0}
+@media(max-width:600px){.demo-wins{grid-template-columns:1fr}}
+.ai-txt p+p{margin-top:10px}
+.ai-step{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.5;color:var(--ivory);background:rgba(255,255,255,.05);border:1px solid rgba(155,111,232,.32);box-shadow:0 0 18px -10px rgba(155,111,232,.35)}
+.ai-step span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -210,21 +284,64 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
 
   <a href="library.html" class="back-link">← Библиотека ресурсов</a>
 
-  <div class="meta"><span>Промт</span><span>30 минут</span><span>Мир нейросетей</span></div>
-
   <h1>Личный<br>AI-партнёр</h1>
 
   <p class="desc">
-    Обычный чат отвечает всем одинаково. Партнёр знает твои цели, слабые места и то, как с тобой говорить.<br>
-    У меня такой работает каждый день: он в курсе, куда я иду, и говорит прямо, когда я ухожу в сторону. Ниже промт, который проведёт интервью и соберёт партнёра под тебя.
+    Обычный чат отвечает всем одинаково и почти всегда соглашается. Партнёр знает твои цели, слабые места и то, как с тобой говорить. Ниже промт: он проведёт интервью и за 30 минут соберёт партнёра под тебя.
   </p>
 
-  <p class="section-label">Как собрать партнёра за один вечер</p>
+  <div class="hero-act">
+    <button class="tpl-copy tpl-copy-lg" type="button">Скопировать промт</button>
+    <a href="#how" class="hero-link">Как это работает ↓</a>
+  </div>
+
+  <p class="section-label">Одно сообщение, два ответа</p>
+  <div class="demo">
+    <div class="demo-wins">
+      <div class="win ">
+        <div class="win-bar"><i></i><i></i><i></i><span>Обычный чат</span></div>
+        <div class="win-body">
+          <div class="msg me"><p class="dq">У меня пять новых идей, хочу запустить все</p></div>
+          <div class="ai-row">
+            <span class="ai-av">AI</span>
+            <div class="ai-txt"><span class="msg-who">AI</span><p class="da">Отличные идеи! Вот пошаговый план запуска для каждой из пяти…</p></div>
+          </div>
+        </div>
+        <div class="win-input"><span>Напиши сообщение…</span><b>↑</b></div>
+      </div>
+      <div class="win partner">
+        <div class="win-bar"><i></i><i></i><i></i><span>Твой партнёр</span></div>
+        <div class="win-body">
+          <div class="msg me"><p class="dq">У меня пять новых идей, хочу запустить все</p></div>
+          <div class="ai-row">
+            <span class="ai-av">П</span>
+            <div class="ai-txt"><span class="msg-who">Партнёр</span><p>Стоп. Пять идей сразу обычно прикрывают одну задачу, которую не хочется делать.</p>
+              <p>Твоя цель на квартал: десять клиентов. Какая из пяти ведёт к ней напрямую? Остальные четыре запишу в «потом», они никуда не денутся.</p>
+              <p>И про главное: за неделю у тебя вышла одна публикация. Что выпускаем сегодня?</p>
+              <div class="ai-step"><span>Шаг на 15 минут</span>Выбери одну идею и напиши, почему именно она.</div></div>
+          </div>
+        </div>
+        <div class="win-input"><span>Напиши сообщение…</span><b>↑</b></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Что ты получишь</p>
+  <div class="struct">
+    <div><h4>Фокус</h4><p>Держит до трёх направлений, остальное записывает в «потом».</p></div>
+    <div><h4>Ритм</h4><p>Спрашивает цифры в начале разговора и фиксирует шаг на завтра в конце.</p></div>
+    <div><h4>Честность</h4><p>Проверяет идеи до того, как ты потратишь на них месяц. Слабую называет слабой.</p></div>
+    <div><h4>Жизнь целиком</h4><p>Помнит про здоровье, учёбу, спорт и близких наравне с работой.</p></div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="section-label" id="how">Как собрать партнёра за один вечер</p>
   <ol class="steps">
     <li><b>Скопируй промт</b> и вставь его в новый чат Claude, ChatGPT или другого AI.</li>
     <li><b>Отвечай голосом через диктовку.</b> Так быстрее, и ответы выходят честнее. Интервью из семи блоков займёт около 30 минут.</li>
     <li><b>Проверь инструкцию.</b> AI покажет, как партнёр ответит в трёх ситуациях. Поправь то, что звучит не про тебя.</li>
-    <li><b>Создай проект</b> и вставь инструкцию в его настройки. Дальше каждый чат в проекте работает по ней, вставлять заново не нужно.</li>
+    <li><b>Вставь инструкцию в проект.</b> В Claude: Projects → New project → поле Instructions. В других AI: Custom Instructions или первое сообщение нового чата. Дальше каждый чат в проекте работает по ней.</li>
   </ol>
 
   <p class="section-label">Промт-архитектор — вставь в любой AI</p>
@@ -409,46 +526,33 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
     <p><strong>Отвечай историями.</strong> На вопрос «что ты откладываешь» расскажи последний случай: что было и чем закончилось. Из общих слов получится общий партнёр, из твоих случаев получится твой.</p>
   </div>
 
-  <hr class="divider">
-
-  <p class="section-label">Из чего состоит инструкция партнёра</p>
-  <div class="struct">
-    <div><h4>Кто он</h4><p>Роль и сборка мыслителей. Каждый подобран под твою задачу или ловушку.</p></div>
-    <div><h4>С кем работает</h4><p>Факты о тебе: ниша, этап, сильные стороны. Только то, что названо в интервью.</p></div>
-    <div><h4>Направления и цели</h4><p>До трёх направлений. Остальное партнёр записывает в «потом».</p></div>
-    <div><h4>Жизнь целиком</h4><p>Картина жизни через три года и то, чем нельзя жертвовать.</p></div>
-    <div><h4>Ловушки</h4><p>От двух до четырёх привычек, которыми ты себе мешаешь, и правило на каждую.</p></div>
-    <div><h4>Ритм</h4><p>Три вопроса в начале сессии, запись в журнал в конце, разбор раз в неделю.</p></div>
-    <div><h4>Чтение состояния</h4><p>Таблица «пишу так → отвечай так»: для энтузиазма, усталости и просьбы подтвердить.</p></div>
-    <div><h4>Рефлексы</h4><p>Проверки, которые он включает сам: идея, деньги, один приоритет, второй порядок.</p></div>
-    <div><h4>Границы</h4><p>Правила твоей ниши и данные, которые нельзя вставлять в чат.</p></div>
-    <div><h4>Запрещено</h4><p>Лесть, общие советы, выдуманные факты и всё, что названо красной линией.</p></div>
-  </div>
-
-  <p class="section-label">Как это выглядит на деле</p>
-  <div class="ba-q"><span>Сообщение</span>«У меня пять новых идей, хочу запустить все»</div>
-  <div class="ba-grid">
-    <div class="ba-card">
-      <p class="ba-label">Обычный чат</p>
-      <p>Отличные идеи! Вот пошаговый план запуска для каждой из пяти…</p>
-    </div>
-    <div class="ba-card after">
-      <p class="ba-label">Партнёр</p>
-      <p>Пять идей обычно прикрывают одну задачу, которую не хочется делать. Какая из пяти двигает твою главную цель? Остальные запишу в «потом». И что с публикациями за эту неделю?</p>
-    </div>
-  </div>
+  <details class="fold">
+    <summary>Из чего состоит готовая инструкция<span>10 разделов</span></summary>
+    <ul>
+      <li><b>Кто он.</b> Роль и сборка мыслителей под твои задачи и ловушки.</li>
+      <li><b>С кем работает.</b> Факты о тебе: ниша, этап, сильные стороны.</li>
+      <li><b>Направления и цели.</b> До трёх направлений, остальное в «потом».</li>
+      <li><b>Жизнь целиком.</b> Картина через три года и то, чем нельзя жертвовать.</li>
+      <li><b>Ловушки.</b> От двух до четырёх привычек, которыми ты себе мешаешь, и правило на каждую.</li>
+      <li><b>Ритм.</b> Три вопроса в начале сессии, запись в журнал в конце, разбор раз в неделю.</li>
+      <li><b>Чтение состояния.</b> Таблица «пишу так → отвечай так».</li>
+      <li><b>Рефлексы.</b> Проверки, которые он включает сам: идея, деньги, один приоритет.</li>
+      <li><b>Границы.</b> Правила твоей ниши и данные, которые нельзя вставлять в чат.</li>
+      <li><b>Запрещено.</b> Лесть, общие советы, выдуманные факты.</li>
+    </ul>
+  </details>
 
   <hr class="divider">
 
   <p class="section-label">Как он работает у меня</p>
   <div class="body">
-    <p>Мой партнёр знает, куда я иду, что я откладываю и как со мной говорить, когда я ухожу в сторону. Он работает как трекер: в начале сессии спрашивает цифры, в конце фиксирует шаг на завтра.</p>
+    <p>Я начинаю и заканчиваю с ним почти каждый рабочий день. Он знает, куда я иду и что я откладываю, и говорит прямо, когда я ухожу в сторону. В начале сессии спрашивает цифры, в конце фиксирует шаг на завтра.</p>
     <p>Инструкция описывает правила его работы. Текущие задачи, клиентов и цифры я даю ему в разговоре, поэтому её не приходится переписывать каждую неделю. Раз в месяц я обновляю цели и ловушки.</p>
   </div>
 
   <!-- WIKKI.OCEAN CTA -->
   <div class="cta-block">
-    <h3>Хочешь глубже?</h3>
+    <h3>Партнёр готов. Что дальше?</h3>
     <p>Промт соберёт рабочего партнёра. Следующий шаг — встроить его в систему: контент, продажи, задачи. Запишись на разбор, посмотрю твою ситуацию.</p>
     <p>В Telegram-канале показываю, как строю компанию на AI и что из этого работает.</p>
     <div class="cta-actions">
@@ -551,6 +655,7 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
     submitBtn.disabled=true;submitBtn.textContent='Отправляю…';
     setTimeout(function(){formWrap.style.display='none';document.getElementById('wo-success').classList.add('show');},700);
   });
+
 
   var copyBtn=document.querySelectorAll('.tpl-copy');
   var tplSource=document.getElementById('tpl-source');
