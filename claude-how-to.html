@@ -213,6 +213,11 @@ code,.loc code,.note code,.step-text code{color:var(--ivory);background:rgba(255
 .progress{background:linear-gradient(90deg,rgba(155,111,232,.4),rgba(155,111,232,.8))}
 .part h2{background:none;-webkit-text-fill-color:var(--ivory);color:var(--ivory)}
 .level-num{background:none;border:0;box-shadow:none;color:var(--ivory);-webkit-text-fill-color:var(--ivory)}
+/* заголовок: переливающийся градиент, как «Океан знаний» */
+@keyframes ocean-flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+h1{display:inline-block;background:linear-gradient(110deg,#FFFFFF 0%,#E8DFFF 18%,#C4A4FF 34%,#9B6FE8 48%,#C4A4FF 62%,#FFFFFF 78%,#E8DFFF 90%,#9B6FE8 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:ocean-flow 9s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(155,111,232,.22))}
+h1 span{background:none;-webkit-text-fill-color:inherit}
+@media (prefers-reduced-motion:reduce){h1{animation:none;background-position:30% 50%}}
 </style>
 </head>
 <body>

@@ -224,6 +224,26 @@ code,.loc code,.note code,.step-text code{color:var(--ivory);background:rgba(255
 .wo-check input:checked{background:rgba(255,255,255,.14);border-color:rgba(242,237,226,.4)}
 .progress{background:linear-gradient(90deg,rgba(155,111,232,.4),rgba(155,111,232,.8))}
 .level-num{background:none;border:0;box-shadow:none;color:var(--ivory);-webkit-text-fill-color:var(--ivory)}
+/* «Океан знаний»: переливающийся градиент */
+@keyframes ocean-flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero h1{background:linear-gradient(110deg,#FFFFFF 0%,#E8DFFF 18%,#C4A4FF 34%,#9B6FE8 48%,#C4A4FF 62%,#FFFFFF 78%,#E8DFFF 90%,#9B6FE8 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:ocean-flow 9s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(155,111,232,.22))}
+@media (prefers-reduced-motion:reduce){.hero h1{animation:none;background-position:30% 50%}}
+/* рубрики: выпадающий список */
+.cat-pick{position:relative;margin-top:10px}
+.cat-toggle{width:100%;display:flex;align-items:center;gap:12px;min-height:46px;padding:11px 12px;border-radius:14px;cursor:pointer;font-family:var(--font);text-align:left;color:var(--ivory);background:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.012));border:1px solid rgba(242,237,226,.10);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:border-color .2s,box-shadow .2s}
+.cat-toggle:hover,.cat-pick.open .cat-toggle{border-color:rgba(155,111,232,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 18px -8px rgba(155,111,232,.35)}
+.cat-toggle:focus-visible{outline:2px solid rgba(155,111,232,.6);outline-offset:2px}
+.cat-toggle-label{font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cat-toggle-val{flex:1;font-size:14px;font-weight:500;color:var(--ivory)}
+.cat-ico{flex-shrink:0}
+.cat-chev{width:16px;height:16px;color:var(--muted);transition:transform .25s}
+.cat-pick.open .cat-chev{transform:rotate(180deg)}
+.cat-pick .toolbar-filters{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:50;display:flex;flex-direction:column;flex-wrap:nowrap;gap:2px;padding:6px;border-radius:16px;background:linear-gradient(165deg,#17131F,#0D0C14);border:1px solid rgba(155,111,232,.26);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);box-shadow:0 24px 60px -20px rgba(0,0,0,.85),0 0 40px -20px rgba(155,111,232,.35);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s}
+.cat-pick.open .toolbar-filters{opacity:1;visibility:visible;transform:none}
+.cat-pick .filter-chip,.cat-pick .filter-chip.active{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid transparent;background:transparent;box-shadow:none;font-size:14px;font-weight:500;color:var(--id2);text-align:left;-webkit-backdrop-filter:none;backdrop-filter:none}
+.cat-pick .filter-chip:hover{background:rgba(255,255,255,.05);color:var(--ivory);border-color:transparent}
+.cat-pick .filter-chip.active{color:var(--ivory);background:rgba(255,255,255,.06);border-color:rgba(155,111,232,.3)}
+.cat-pick .filter-chip.active::after{content:"";width:7px;height:7px;border-radius:50%;background:#9B6FE8;box-shadow:0 0 10px rgba(155,111,232,.7)}
 </style>
 </head>
 <body>
@@ -264,14 +284,21 @@ code,.loc code,.note code,.step-text code{color:var(--ivory);background:rgba(255
     <input type="text" id="lib-search" placeholder="Найти материал…" aria-label="Поиск по библиотеке">
     <kbd class="search-kbd" id="search-kbd">⌘ K</kbd>
   </div>
-  <div class="toolbar-filters" id="toolbar-filters" role="group" aria-label="Категории">
-    <button class="filter-chip active" type="button" data-filter="all">Все</button>
+  <div class="cat-pick" id="cat-pick">
+  <button class="cat-toggle" type="button" id="cat-toggle" aria-haspopup="listbox" aria-expanded="false">
+    <span class="search-icon-box cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span>
+    <span class="cat-toggle-val" id="cat-val">Все рубрики</span>
+    <svg class="cat-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </button>
+  <div class="toolbar-filters" id="toolbar-filters" role="listbox" aria-label="Рубрики">
+    <button class="filter-chip active" type="button" data-filter="all">Все рубрики</button>
     <button class="filter-chip" type="button" data-filter="neuro">Мир нейросетей</button>
     <button class="filter-chip" type="button" data-filter="brand">Личный бренд</button>
     <button class="filter-chip" type="button" data-filter="sales">Продажи и воронки</button>
     <button class="filter-chip" type="button" data-filter="auto">Автоматизация</button>
     <button class="filter-chip" type="button" data-filter="system">Бизнес-система</button>
     <button class="filter-chip" type="button" data-filter="effic">Личная эффективность</button>
+  </div>
   </div>
 </div>
 
@@ -528,11 +555,18 @@ code,.loc code,.note code,.step-text code{color:var(--ivory);background:rgba(255
     if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();searchInput.focus();}
   });
 
+  var catPick=document.getElementById('cat-pick'),catToggle=document.getElementById('cat-toggle');
+  function closeCats(){catPick.classList.remove('open');catToggle.setAttribute('aria-expanded','false');}
+  catToggle.addEventListener('click',function(e){e.stopPropagation();var o=catPick.classList.toggle('open');catToggle.setAttribute('aria-expanded',o?'true':'false');});
+  document.addEventListener('click',function(e){if(!catPick.contains(e.target))closeCats();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCats();});
   chips.forEach(function(chip){
     chip.addEventListener('click',function(){
       chips.forEach(function(c){c.classList.remove('active');});
       chip.classList.add('active');
       activeFilter=chip.getAttribute('data-filter');
+      document.getElementById('cat-val').textContent=chip.textContent;
+      closeCats();
       applyFilters();
     });
   });
