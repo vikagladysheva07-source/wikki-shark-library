@@ -556,14 +556,26 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
   var tplSource=document.getElementById('tpl-source');
   copyBtn.forEach(function(btn){btn.addEventListener('click',function(){
     var text=tplSource.textContent;
-    navigator.clipboard.writeText(text).then(function(){
+    function done(){
       btn.textContent='Скопировано';
       btn.classList.add('copied');
       setTimeout(function(){
         btn.textContent='Скопировать промт';
         btn.classList.remove('copied');
       },2000);
-    });
+    }
+    function fallback(){
+      var ta=document.createElement('textarea');
+      ta.value=text;ta.setAttribute('readonly','');
+      ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,text.length);
+      var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+      document.body.removeChild(ta);
+      if(ok){done();}else{btn.textContent='Выдели текст и скопируй вручную';}
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    }else{fallback();}
   });});
 })();
 </script>
