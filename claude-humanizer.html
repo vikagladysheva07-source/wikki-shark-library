@@ -17,7 +17,7 @@
   --idd:rgba(255,255,255,.38);
   --line:rgba(242,237,226,.10);
   --purple:#9B6FE8;--purple-br:#C4A4FF;
-  --teal:#00C4D4;--teal-br:#5EE0EE;
+  --teal:#F2EDE2;--teal-br:#F2EDE2;
   --font:'DM Sans',system-ui,-apple-system,sans-serif;
   --mono:'SFMono-Regular',Menlo,Consolas,monospace;
 }
@@ -36,7 +36,7 @@ a{color:inherit;text-decoration:none}
 /* ── ORBS (ambient glow) ── */
 .orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:-1}
 .orb-purple{background:radial-gradient(circle,rgba(155,111,232,.26) 0%,rgba(91,47,190,.09) 70%)}
-.orb-teal{background:radial-gradient(circle,rgba(0,196,212,.20) 0%,rgba(0,196,212,.05) 70%)}
+.orb-teal{background:radial-gradient(circle,rgba(91,47,190,.20) 0%,rgba(91,47,190,.05) 70%)}
 
 /* back link */
 .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--idd);margin-bottom:32px;transition:color .2s}
@@ -60,7 +60,7 @@ h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:
 .note{padding:20px 24px;border-left:2px solid var(--purple);background:linear-gradient(90deg,rgba(155,111,232,.08),rgba(155,111,232,.02));margin-bottom:48px;border-radius:0 4px 4px 0;box-shadow:0 16px 32px -24px rgba(0,0,0,.55)}
 .note p{font-size:14px;color:var(--id);line-height:1.65}
 .note strong{color:var(--ivory)}
-.note code{font-family:var(--mono);font-size:12.5px;color:var(--teal-br);background:rgba(0,196,212,.08);padding:2px 6px;border-radius:5px}
+.note code{font-family:var(--mono);font-size:12.5px;color:var(--teal-br);background:rgba(255,255,255,.08);padding:2px 6px;border-radius:5px}
 
 /* prompt box */
 .tpl-box{margin:24px 0 48px;padding:28px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.55);box-shadow:inset 0 1px 0 rgba(242,237,226,.04),0 20px 44px -28px rgba(0,0,0,.7)}
@@ -70,7 +70,7 @@ h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:
 .tpl-copy:hover{background:rgba(155,111,232,.2);border-color:rgba(155,111,232,.55);transform:translateY(-1px);box-shadow:0 6px 16px -8px rgba(155,111,232,.5),inset 0 1px 0 rgba(255,255,255,.08)}
 .tpl-copy:active{transform:translateY(0);background:rgba(155,111,232,.14)}
 .tpl-copy:focus-visible{outline:2px solid var(--purple-br);outline-offset:2px}
-.tpl-copy.copied{color:var(--teal-br);border-color:rgba(0,196,212,.4);background:rgba(0,196,212,.1)}
+.tpl-copy.copied{color:var(--teal-br);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.1)}
 .tpl-box pre{font-family:var(--mono);font-size:12.5px;line-height:1.8;color:var(--id2);white-space:pre-wrap;word-break:break-word}
 .tpl-box pre b{color:var(--ivory);font-weight:700}
 .tpl-ph{color:var(--teal-br)}
@@ -82,7 +82,7 @@ h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:
 /* before/after */
 .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 64px}
 .ba-card{padding:22px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,9,.4)}
-.ba-card.after{border-color:rgba(155,111,232,.25);background:linear-gradient(165deg,rgba(155,111,232,.06),rgba(0,196,212,.015))}
+.ba-card.after{border-color:rgba(155,111,232,.25);background:linear-gradient(165deg,rgba(155,111,232,.06),rgba(255,255,255,.015))}
 .ba-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;color:var(--idd)}
 .ba-card.after .ba-label{color:var(--purple-br)}
 .ba-card p{font-size:14px;line-height:1.65;color:var(--id2)}
@@ -98,7 +98,7 @@ h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:.9;letter-spacing:
 .body em{font-style:normal;color:var(--ivory)}
 
 /* CTA */
-.cta-block{margin-top:24px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(0,196,212,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
+.cta-block{margin-top:24px;padding:40px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,rgba(155,111,232,.07),rgba(255,255,255,.02));box-shadow:0 32px 64px -32px rgba(0,0,0,.65),inset 0 1px 0 rgba(242,237,226,.05)}
 .cta-block h3{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:14px;text-transform:uppercase}
 .cta-block p{font-size:14px;color:var(--id);line-height:1.68;max-width:480px;margin-bottom:24px}
 .cta-btn{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--id2);background:transparent;border:1px solid var(--line);padding:11px 22px 11px 8px;border-radius:100px;cursor:pointer;font-family:var(--font);transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s cubic-bezier(.2,.8,.2,1)}
@@ -176,6 +176,35 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
   .ba-grid{grid-template-columns:1fr}
   footer{flex-direction:column;gap:12px;text-align:center}
 }
+/* unified style 15.11: как ai-partner — нейтральное стекло, фиолетовый только светом */
+:root{--glass:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.012));--glass-line:rgba(242,237,226,.10);--glow:0 28px 60px -38px rgba(91,47,190,.4);--ring:rgba(155,111,232,.42)}
+h1,h1 span{background:linear-gradient(100deg,#FFFFFF 0%,#FFFFFF 18%,#E8DFFF 45%,#C4A4FF 72%,#9B6FE8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:none}
+h1 span{background:none;-webkit-text-fill-color:inherit}
+h1{display:inline-block}
+/* карточки и плашки */
+.note,.tpl-box,.example-box,.screenshot-box,.ba-card,.you-here,.cmp-row.good,.my-case,.mistake,.option,.info-card,.loop,.principle,.ocean-quote,.wikki,.res-item,.res-teaser,.about-teaser-inner,.lib-cta-inner,.cta-block,.src,.toolbar-search{position:relative;background:var(--glass);border:1px solid var(--glass-line);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),var(--glow)}
+.note{border-left:1px solid rgba(155,111,232,.4)}
+.ba-card.after,.cmp-row.good,.my-case,.you-here{border-color:rgba(155,111,232,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 36px -18px rgba(155,111,232,.3),0 28px 60px -34px rgba(91,47,190,.45)}
+.cta-block,.lib-cta-inner,.about-teaser-inner{border-color:rgba(155,111,232,.26);background:radial-gradient(120% 60% at 50% 0%,rgba(91,47,190,.13),transparent 60%),var(--glass);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 60px -30px rgba(155,111,232,.32),0 32px 64px -32px rgba(0,0,0,.7)}
+.res-item:hover{background:linear-gradient(165deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-color:rgba(155,111,232,.36)}
+/* кружки, номера, бейджи, иконки */
+.part-num,.option-num,.ic-badge,.ach-ico,.res-icon,.you-here-mark,.mistake-mark,.search-icon-box,.wikki-tag,.res-teaser-badge,.hero-pill,.cta-btn-icon,.ch-n{background:rgba(255,255,255,.04);border:1px solid var(--ring);color:var(--ivory);box-shadow:0 0 12px rgba(155,111,232,.22),inset 0 0 8px rgba(155,111,232,.08)}
+.gives li::before{background:rgba(155,111,232,.55);box-shadow:0 0 10px rgba(155,111,232,.4)}
+/* кнопки */
+.tpl-copy,.tpl-copy.copied,.cta-btn-ghost,.wo-submit,.res-teaser-btn,.filter-chip.active{color:var(--ivory);background:var(--glass);border:1px solid rgba(155,111,232,.34);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 16px -6px rgba(155,111,232,.28)}
+.tpl-copy:hover,.cta-btn-ghost:hover,.wo-submit:hover,.res-teaser-btn:hover{background:linear-gradient(165deg,rgba(255,255,255,.1),rgba(255,255,255,.03));border-color:rgba(155,111,232,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 32px -16px rgba(91,47,190,.7)}
+/* текст без фиолетового */
+.cta-eyebrow,.wo-modal-eyebrow,.eyebrow,.sec-label,.res-label,.about-teaser-eyebrow,.my-case-label,.ba-card.after .ba-label,.wo-error{color:var(--muted)}
+.principle h4,.loop strong,.example-box pre b,.start-table td:first-child,.tbl td:first-child,.about-teaser-arrow,.search-icon-box,.toolbar-search:focus-within .search-icon-box{color:var(--ivory)}
+.level-body a,.step-text a,.option p a,.src a{color:var(--ivory);text-decoration:underline;text-decoration-color:rgba(155,111,232,.6);text-underline-offset:3px}
+code,.loc code,.note code,.step-text code{color:var(--ivory);background:rgba(255,255,255,.06)}
+.desc em,.hero-desc em{color:var(--ivory)}
+/* форма */
+.wo-input:focus,.wo-textarea:focus{border-color:rgba(155,111,232,.5);background:rgba(255,255,255,.04)}
+.wo-check:has(input:checked){color:var(--ivory);border-color:rgba(155,111,232,.45);background:rgba(255,255,255,.04)}
+.wo-check input:checked{background:rgba(255,255,255,.14);border-color:rgba(242,237,226,.4)}
+.progress{background:linear-gradient(90deg,rgba(155,111,232,.4),rgba(155,111,232,.8))}
+.level-num{background:none;border:0;box-shadow:none;color:var(--ivory);-webkit-text-fill-color:var(--ivory)}
 </style>
 </head>
 <body>
@@ -236,7 +265,7 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
   </div>
 
   <div class="note">
-    <p>Работает в ChatGPT, Claude, Gemini — где угодно. Скопируй промт, вставь в чат, добавь свой текст в конце. А чтобы AI чистил каждый текст сам — вставь этот список в поле <code>Instructions for Claude</code> или в инструкцию проекта (см. шаблон «О себе»).</p>
+    <p>Работает в ChatGPT, Claude, Gemini — где угодно. Скопируй промт, вставь в чат, добавь свой текст в конце. А чтобы AI чистил каждый текст сам — вставь этот список в постоянные инструкции своего AI или в инструкцию проекта (см. шаблон «О себе»).</p>
   </div>
 
   <hr class="divider">
@@ -342,7 +371,7 @@ footer{padding:48px 32px;border-top:1px solid var(--line);display:flex;align-ite
     <div class="more-grid">
       <a class="more-card" href="claude-profile.html">
         <p class="more-card-label">Шаблон</p>
-        <p class="more-card-title">Шаблон «О себе» — контекст о тебе для Claude</p>
+        <p class="more-card-title">Шаблон «О себе» — контекст о тебе для любого AI</p>
       </a>
       <a class="more-card" href="claude-guide.html">
         <p class="more-card-label">Руководство</p>
