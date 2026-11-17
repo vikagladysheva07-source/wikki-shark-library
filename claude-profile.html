@@ -503,7 +503,7 @@ h1 span{background:none;-webkit-text-fill-color:inherit}
   var tplSource=document.getElementById('tpl-source');
   copyBtn.addEventListener('click',function(){
     var text=tplSource.innerText;
-    navigator.clipboard.writeText(text).then(function(){
+    wkCopy(text,function(){
       copyBtn.textContent='Скопировано';
       copyBtn.classList.add('copied');
       setTimeout(function(){
@@ -515,5 +515,61 @@ h1 span{background:none;-webkit-text-fill-color:inherit}
 })();
 </script>
 
+<script>
+/* wkCopy: надёжное копирование на любом телефоне.
+   1) Clipboard API (с тайм-аутом: во встроенных браузерах Telegram/Instagram он может зависнуть)
+   2) скрытое поле + execCommand('copy')
+   3) если не вышло: окно с текстом, «Выделить всё» и «Поделиться» (на Android в меню есть «Копировать» и Claude) */
+(function(){
+  if(window.wkCopy)return;
+  function legacy(text){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;font-size:16px';
+    document.body.appendChild(ta);
+    try{ta.focus({preventScroll:true});}catch(e){}
+    ta.select();try{ta.setSelectionRange(0,text.length);}catch(e){}
+    var ok=false;try{ok=document.execCommand('copy');}catch(e){ok=false;}
+    document.body.removeChild(ta);
+    try{window.getSelection().removeAllRanges();}catch(e){}
+    return ok;
+  }
+  function canShare(){try{return !!navigator.share&&window.self===window.top;}catch(e){return false;}}
+  function manual(text){
+    var old=document.getElementById('wkc-ov');if(old)old.remove();
+    var ov=document.createElement('div');ov.id='wkc-ov';
+    ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(5,5,10,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px';
+    var box=document.createElement('div');
+    box.style.cssText='width:100%;max-width:640px;max-height:92vh;display:flex;flex-direction:column;gap:12px;background:#0E0E16;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px;color:#F2EDE2;font-family:inherit;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    var p=document.createElement('div');
+    p.style.cssText='font-size:15px;line-height:1.45';
+    p.textContent='Телефон не дал скопировать автоматически. Нажми «Выделить всё», затем зажми текст и выбери «Копировать».'+(canShare()?' Или нажми «Поделиться» и отправь текст сразу в Claude.':'');
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.readOnly=true;
+    ta.style.cssText='flex:1;min-height:200px;width:100%;resize:none;background:rgba(255,255,255,.04);color:#F2EDE2;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;font:13px/1.5 ui-monospace,Menlo,monospace;-webkit-user-select:text;user-select:text';
+    var row=document.createElement('div');row.style.cssText='display:flex;gap:8px;flex-wrap:wrap';
+    function mk(label,fn){var b=document.createElement('button');b.type='button';b.textContent=label;
+      b.style.cssText='flex:1 1 140px;min-height:46px;font-family:inherit;font-weight:600;font-size:15px;line-height:1;color:#F2EDE2;background:rgba(255,255,255,.06);border:1px solid rgba(196,164,255,.4);border-radius:12px;padding:0 14px;cursor:pointer';
+      b.addEventListener('click',fn);row.appendChild(b);return b;}
+    function selAll(){try{ta.focus({preventScroll:true});}catch(e){ta.focus();}ta.select();try{ta.setSelectionRange(0,ta.value.length);}catch(e){}ta.scrollTop=0;}
+    mk('Выделить всё',function(){selAll();if(legacy(text)){p.textContent='Скопировано. Можно закрыть окно.';}});
+    if(canShare()){mk('Поделиться',function(){navigator.share({text:text}).catch(function(){});});}
+    mk('Закрыть',function(){ov.remove();});
+    ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+    box.appendChild(p);box.appendChild(ta);box.appendChild(row);ov.appendChild(box);document.body.appendChild(ov);
+    setTimeout(selAll,50);
+  }
+  window.wkCopy=function(text,onOk){
+    var finished=false;
+    function ok(){if(finished)return;finished=true;if(onOk)onOk();}
+    function fail(){if(finished)return;if(legacy(text)){ok();return;}finished=true;manual(text);}
+    if(navigator.clipboard&&navigator.clipboard.writeText&&window.isSecureContext){
+      var t=setTimeout(fail,1500);
+      try{navigator.clipboard.writeText(text).then(function(){clearTimeout(t);ok();},function(){clearTimeout(t);fail();});}
+      catch(e){clearTimeout(t);fail();}
+    }else{fail();}
+  };
+})();
+</script>
 </body>
 </html>
